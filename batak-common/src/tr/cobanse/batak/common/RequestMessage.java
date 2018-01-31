@@ -1,0 +1,64 @@
+package tr.cobanse.batak.common;
+
+/**
+ * @author coban
+ * Request message is responsible to send player action to server
+ */
+public class RequestMessage {
+	
+	/**
+	 * which card a user will discard
+	 */
+	private Card card = new Card(Symbol.EMPTY, CardType.NONE);
+	/**
+	 * player name
+	 */
+	private String playerName;
+	
+	/**
+	 * what kinds of action will be send
+	 * 
+	 * possible types are CHAT, DISCARD CARD
+	 */
+	private RequestType requestType;
+	
+	
+	public RequestMessage(Card card, String playerName, RequestType requestType ) {
+		this.card = card;
+		this.playerName = playerName;
+		this.requestType = requestType;
+	}
+
+
+	public Card getCard() {
+		return card;
+	}
+
+
+	public void setCard(Card card) {
+		this.card = card;
+	}
+
+
+	public String getPlayerName() {
+		return playerName;
+	}
+
+
+	public void setPlayerName(String playerName) {
+		this.playerName = playerName;
+	}
+
+
+	public RequestType getRequestType() {
+		return requestType;
+	}
+
+
+	public void setRequestType(RequestType requestType) {
+		this.requestType = requestType;
+	}
+	
+	
+	
+}
