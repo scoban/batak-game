@@ -1,0 +1,60 @@
+User story - 1
+
+	A user connects to the server once (s)he enters server ip address
+
+	GameException
+	
+	If the ip address is not valid or is not available to reach, an exception is displayed to the user.
+
+User story - 2
+	Client GUI prompts server ip address, user's name. If a user name is valid, and not taken by another user, server returns a valid message
+	Otherwise, server return user to enter different name 
+	
+	GameException
+		- user name is choosen by another player
+		
+User story - 3
+
+	User sends a message to the other user. This message is broadcasted to all user connected to game.
+	
+User story - 4
+
+	User sends a action message to the server. Server validates and operate this message and the final status will 
+	broadcast to the all user connected to server.
+	
+	GameException
+		- user can send a card that is not belongs to user
+		- user should sends an card whose value is lower than the card which is top of the discarded cards if user has greater value 
+		
+User story - 5 
+
+	Users should guess the number of turn win in an game episode. The user who says maximum value, has right to say ***which card takes on the table***
+	
+	
+Game Rules
+
+	Game initially distribute cards to the user totally 13 cards for each user and sends back to the user
+
+	Before starts a game, a user guess how many turn he takes in an game episode. The maximum guessed turn will have the right to
+	specify trump card.
+	
+	The game is played in a pair. Opposite users is a pair in the game.
+	 
+	The game turn is sequential to counter clock-wise.
+	
+	The user draw card first if he receives cards on the table.
+	
+	At the beginning of game, the player who draw card first, he starts the game episode.
+	
+	The game will end if there is no card that player has
+	
+	Score is incremental. So, if a user receive equal or greater turns as guessed at the beginning of game, receive points as turns taken.
+	Otherwise, the loser user pairs receives negative point equal to guessed number.
+
+	The game continue until a predefined win points.
+	
+	
+Technical implementations
+
+	- Every user has a related thread in game server. So that each user receives its proper cards.
+	- Once an action operated in game server, all thread receives actions

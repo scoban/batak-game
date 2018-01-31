@@ -1,0 +1,20 @@
+First build batak-common project:
+
+cd batak-common
+mvn clean install
+
+
+then build and run server
+cd batak-server
+mvn clean install
+
+
+To run server app:
+cd batak-server
+mvn exec:java -Dexec.mainClass="tr.com.ozyegin.cartagena.server.ServerApplication"
+
+
+To run client app:
+cd cartagena-client
+mvn clean install
+mvn exec:java -Dexec.mainClass="tr.com.ozyegin.catagena.client.App"
