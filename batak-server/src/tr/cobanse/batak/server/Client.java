@@ -6,24 +6,28 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 
+import tr.cobanse.batak.action.ChangeMate;
+
 public class Client implements Runnable {
 	
+	CardGame cardGame;
 	Socket clientSocket;
 	BufferedReader  in;
 	OutputStream out;
 	
-	public Client(Socket socket) throws IOException {
+	public Client(Socket socket, CardGame cardGame) throws IOException {
 		clientSocket = socket; 
 		in = new BufferedReader (new InputStreamReader(socket.getInputStream()));
-		out = socket.getOutputStream(); 
+		out = socket.getOutputStream();
+		this.cardGame = cardGame;
 	}
 	
 	@Override
 	public void run() {
 		try{
 			while(true) {
-				System.out.print("Enter a message:");
 				String line = in.readLine();
+				cardGame.receiveAction(new ChangeMate());
 				sendMessage(line);
 			}
 		} catch (Exception e) {
