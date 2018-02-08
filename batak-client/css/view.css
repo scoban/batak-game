@@ -1,0 +1,4 @@
+.root {
+	-fx-background-image: url("../resources/background.jpg");
+    -fx-background-position: center center;
+}
