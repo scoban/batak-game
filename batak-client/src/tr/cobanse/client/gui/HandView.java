@@ -1,10 +1,11 @@
 package tr.cobanse.client.gui;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import javafx.scene.layout.StackPane;
-import tr.cobanse.batak.common.Card;
+import javafx.scene.layout.Pane;
 import tr.cobanse.client.card.CardConstants;
 
 /**
@@ -12,27 +13,61 @@ import tr.cobanse.client.card.CardConstants;
  * view of user hands
  * opposite player hands will be showns as blank handview
  */
-public class HandView extends StackPane{
+public class HandView {
 	
 	private List<CardView> availableCards = new ArrayList<>();
 	private int width = 100;
 	private int height = 100;
 	private boolean preserveRatio = true;
+	private DirectionType directionType;
+	private Pane layout;
+	private CardPool cardPool;
 	
-	public HandView(List<Card> cards) {
+	public HandView(List<CardConstants> cards, DirectionType directionType, CardPool cardPool) throws FileNotFoundException {
+		this.directionType = directionType;
+		this.cardPool = cardPool;
 		generateCardView(cards);
 		generateHandView(availableCards);
 	}
 	
+	public HandView(DirectionType directionType, CardPool cardPool) throws FileNotFoundException {
+		this.directionType = directionType;
+		this.cardPool = cardPool;
+		List<CardConstants> cards = Arrays.asList(CardConstants.SINEK10,CardConstants.MACA2,CardConstants.KARO3);
+		generateCardView(cards);
+		generateHandView(availableCards);  
+	}
+	
 	private void generateHandView(List<CardView> cards) {
+		layout = DirectionTypeLayout.getDirectionPane(directionType);
 		for (CardView cardView : cards) {
-			getChildren().add(cardView);
+			
+			cardView.setOnMousePressed((mouseEvent)->{
+				cardView.setOrgSceneX(mouseEvent.getSceneX()); 
+				cardView.setOrgSceneY(mouseEvent.getSceneY()); 
+				cardView.setOrgTranslateX(cardView.getTranslateX());
+				cardView.setOrgTranslateY(cardView.getTranslateY());
+			});
+			cardView.setOnMouseDragged((mouseEvent)->{
+				double offsetX = mouseEvent.getSceneX() - cardView.getOrgSceneX();
+	            double offsetY = mouseEvent.getSceneY() - cardView.getOrgSceneY();
+	            double newTranslateX = cardView.getOrgTranslateX() + offsetX;
+	            double newTranslateY = cardView.getOrgTranslateY() + offsetY;
+	            cardView.setTranslateX(newTranslateX);
+	            cardView.setTranslateY(newTranslateY);
+			});
+			
+			layout.getChildren().add(cardView);
 		}
 	}
 
-	private void generateCardView(List<Card> cards) {
-		for (Card card : cards) {
-			availableCards.add(new CardView(CardConstants.KARO10.getUrl(), width, height, preserveRatio));
+	private void generateCardView(List<CardConstants> cards) throws FileNotFoundException {
+		for (CardConstants card : cards) {
+			availableCards.add(new CardView(card.getUrl(), width, height, preserveRatio));
 		}
+	}
+	
+	public Pane getLayout() {
+		return layout;
 	}
 }
