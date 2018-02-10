@@ -1,11 +1,13 @@
-package tr.cobanse.batak.action;
+package tr.cobanse.batak.server.action;
+
+import tr.cobanse.batak.common.ResponseMessage;
 
 public class LeaveGame implements PlayerAction{
 
 	@Override
-	public void act() {
-		// TODO Auto-generated method stub
-		
+	public ResponseMessage execute() {
+		ResponseMessage message = new ResponseMessage("", null);
+		return message;
 	}
 
 }

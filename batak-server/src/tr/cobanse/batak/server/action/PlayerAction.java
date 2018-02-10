@@ -1,5 +1,7 @@
-package tr.cobanse.batak.action;
+package tr.cobanse.batak.server.action;
+
+import tr.cobanse.batak.common.ResponseMessage;
 
 public interface PlayerAction {
-	public void act();
+	public ResponseMessage execute();
 }

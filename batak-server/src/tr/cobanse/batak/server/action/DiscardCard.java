@@ -1,11 +1,13 @@
-package tr.cobanse.batak.action;
+package tr.cobanse.batak.server.action;
 
-public class DrawCard implements PlayerAction{
+import tr.cobanse.batak.common.ResponseMessage;
+
+public class DiscardCard implements PlayerAction{
 
 	@Override
-	public void act() {
-		// TODO Auto-generated method stub
-		
+	public ResponseMessage execute() {
+		ResponseMessage message = new ResponseMessage("", null);
+		return message;
 	}
 
 }
