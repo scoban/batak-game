@@ -21,18 +21,15 @@ public class HandView {
 	private boolean preserveRatio = true;
 	private DirectionType directionType;
 	private Pane layout;
-	private CardPool cardPool;
 	
 	public HandView(List<CardConstants> cards, DirectionType directionType, CardPool cardPool) throws FileNotFoundException {
 		this.directionType = directionType;
-		this.cardPool = cardPool;
 		generateCardView(cards);
 		generateHandView(availableCards);
 	}
 	
 	public HandView(DirectionType directionType, CardPool cardPool) throws FileNotFoundException {
 		this.directionType = directionType;
-		this.cardPool = cardPool;
 		List<CardConstants> cards = Arrays.asList(CardConstants.SINEK10,CardConstants.MACA2,CardConstants.KARO3);
 		generateCardView(cards);
 		generateHandView(availableCards);  
@@ -41,22 +38,7 @@ public class HandView {
 	private void generateHandView(List<CardView> cards) {
 		layout = DirectionTypeLayout.getDirectionPane(directionType);
 		for (CardView cardView : cards) {
-			
-			cardView.setOnMousePressed((mouseEvent)->{
-				cardView.setOrgSceneX(mouseEvent.getSceneX()); 
-				cardView.setOrgSceneY(mouseEvent.getSceneY()); 
-				cardView.setOrgTranslateX(cardView.getTranslateX());
-				cardView.setOrgTranslateY(cardView.getTranslateY());
-			});
-			cardView.setOnMouseDragged((mouseEvent)->{
-				double offsetX = mouseEvent.getSceneX() - cardView.getOrgSceneX();
-	            double offsetY = mouseEvent.getSceneY() - cardView.getOrgSceneY();
-	            double newTranslateX = cardView.getOrgTranslateX() + offsetX;
-	            double newTranslateY = cardView.getOrgTranslateY() + offsetY;
-	            cardView.setTranslateX(newTranslateX);
-	            cardView.setTranslateY(newTranslateY);
-			});
-			
+			cardView.addDragListener();
 			layout.getChildren().add(cardView);
 		}
 	}
