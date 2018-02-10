@@ -1,9 +1,6 @@
-package tr.cobanse.batak.server;
+package tr.cobanse.batak.common;
 
 import java.util.List;
-
-import tr.cobanse.batak.action.PlayerAction;
-import tr.cobanse.batak.common.Player;
 
 public interface CardGame {
 
@@ -11,7 +8,11 @@ public interface CardGame {
 	
 	public void addPlayer(Player player);
 	
-	public void receiveAction(PlayerAction action);
+	public void removePlayer(Player player);
 	
 	public Player currentPlayer();
+	
+	public ResponseMessage execute(RequestMessage message);
+	
+	public void start();
 }

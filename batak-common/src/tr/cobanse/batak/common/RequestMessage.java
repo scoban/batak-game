@@ -23,6 +23,10 @@ public class RequestMessage {
 	private RequestType requestType;
 	
 	
+	public RequestMessage(String playerName, RequestType requestType ) {
+		this(null,playerName,requestType);
+	}
+	
 	public RequestMessage(Card card, String playerName, RequestType requestType ) {
 		this.card = card;
 		this.playerName = playerName;
