@@ -1,25 +1,47 @@
-package tr.cobanse.batak.server;
+package tr.cobanse.batak.server.game;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import tr.cobanse.batak.common.CardGame;
 
 /**
  * @author coban
- * game room stores connected users
+ * game room stores available games 
  */
 public class GameRoom {
 	
-	private ExecutorService executorService;
+	private List<CardGame> availableGames;
 	
-	public GameRoom() {
-		executorService = Executors.newFixedThreadPool(4);
+	private static GameRoom gameRoom;
+	
+	private GameRoom() {
+		availableGames = new ArrayList<>();
 	}
 	
-	public void execute(Runnable runnable) {
-		executorService.execute(runnable);
+	/**
+	 * @return
+	 */
+	public static GameRoom getInstance() {
+		if(gameRoom==null)
+			gameRoom = new GameRoom();
+		return gameRoom;
 	}
 	
-	public void shutdown() {
-		executorService.shutdown();
+	public void createGame(CardGame newGame) {
+		availableGames.add(newGame);
+	}
+	
+	public List<CardGame> getAvailableGames() {
+		return Collections.unmodifiableList(availableGames);
+	}
+	
+	public void closeGame(CardGame game) {
+		availableGames.remove(game);
+	}
+	
+	public int getNumberOfGame() {
+		return availableGames.size();
 	}
 }
