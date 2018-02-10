@@ -4,48 +4,63 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 
-import tr.cobanse.batak.action.ChangeMate;
+import org.apache.log4j.Logger;
+
+import com.google.gson.Gson;
+
+import tr.cobanse.batak.common.CardGame;
+import tr.cobanse.batak.common.RequestMessage;
+import tr.cobanse.batak.common.ResponseMessage;
+import tr.cobanse.batak.server.action.ClientActionFactory;
+import tr.cobanse.batak.server.action.PlayerAction;
 
 public class Client implements Runnable {
 	
-	CardGame cardGame;
-	Socket clientSocket;
-	BufferedReader  in;
-	OutputStream out;
+	private Logger logger = Logger.getLogger(Client.class);
 	
-	public Client(Socket socket, CardGame cardGame) throws IOException {
+	private CardGame cardGame;
+	private Socket clientSocket;
+	private BufferedReader  in;
+	private PrintWriter out;
+	private Gson gson;
+	private volatile boolean running = true;
+	
+	public Client(Socket socket, CardGame game) throws IOException {
 		clientSocket = socket; 
-		in = new BufferedReader (new InputStreamReader(socket.getInputStream()));
-		out = socket.getOutputStream();
-		this.cardGame = cardGame;
+		in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+		out = new PrintWriter(clientSocket.getOutputStream(),true);
+		cardGame = game;
+		gson = new Gson();
+	}
+	
+	public void startListening() {
+		Thread t = new Thread(this);
+		t.start();
 	}
 	
 	@Override
 	public void run() {
 		try{
+			logger.debug("Client is created and listening...");
+			sendMessage(new ResponseMessage("Welcome to the batak game...", null));
+			logger.debug("Welcome message sent");
 			while(true) {
-				String line = in.readLine();
-				cardGame.receiveAction(new ChangeMate());
-				sendMessage(line);
+				String request = in.readLine();
+				logger.debug("receiving action " + request);
+				RequestMessage requestMessage = gson.fromJson(request, RequestMessage.class);
+				PlayerAction action = ClientActionFactory.createAction(requestMessage.getRequestType());
+				ResponseMessage message = action.execute();
+				sendMessage(message);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 		}
 	}
 
-	public void sendMessage(String message) throws IOException { 
-		out.write((message + "\r\n").getBytes()); 
-		out.flush();
-	}
-
-	/**
-	 * send game configuration to the connected clients 
-	 * status consists of number of player, current player
-	 * @param batakGame
-	 */
-	public void sendGameSatus(BatakGame batakGame) {
-	
+	private void sendMessage(ResponseMessage message) throws IOException {
+		out.println(gson.toJson(message)); 
 	}
 }

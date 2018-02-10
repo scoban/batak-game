@@ -1,16 +1,16 @@
-package tr.cobanse.batak.application;
+package tr.cobanse.batak.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import tr.cobanse.batak.server.Client;
-import tr.cobanse.batak.server.GameRoom;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 
 public class GameApplication extends Thread{
-
-	private GameRoom gameRoom;
 	
+	private Logger logger = Logger.getLogger(GameApplication.class);
+
 	private ServerSocket serverSocket;
 	
 	private int portNumber = 60001;
@@ -18,8 +18,8 @@ public class GameApplication extends Thread{
 	private volatile boolean running;
 	
 	public GameApplication(int portNumber) throws IOException {
+		BasicConfigurator.configure();
 		this.portNumber = portNumber;
-		gameRoom = new GameRoom();
 		serverSocket = new ServerSocket(this.portNumber);
 	}
 	
@@ -29,18 +29,24 @@ public class GameApplication extends Thread{
 	 * */
 	@Override
 	public void run() {
-		System.out.println("Game application has started...");
+		logger.debug("Game application has started...");
 		while(running) {
-			System.out.println("Game application is alive...");
+			logger.debug("Game application is alive...");
 			Socket socket;
 			try {
 				socket = serverSocket.accept();
-				System.out.println("a connection request has been received..."+socket.getInetAddress());
+				logger.debug("a connection request has been received..."+socket.getInetAddress());
 				Client client = new Client(socket,null);
-				client.sendMessage("Welcome to the batak game...");
-				gameRoom.execute(client); 
+				client.startListening(); 
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage());
+			}
+		}
+		if(serverSocket!=null) {
+			try {
+				serverSocket.close();
+			} catch (IOException e) {
+				logger.error(e.getMessage());
 			}
 		}
 	}
@@ -49,6 +55,10 @@ public class GameApplication extends Thread{
 	public synchronized void start() {
 		running = true;
 		super.start();
+	}
+	
+	public void stopGame() {
+		running = false;
 	}
 	
 	public int getPortNumber() {
