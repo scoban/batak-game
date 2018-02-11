@@ -3,9 +3,9 @@ package tr.cobanse.batak.server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
@@ -45,14 +45,14 @@ public class Client implements Runnable {
 	public void run() {
 		try{
 			logger.debug("Client is created and listening...");
-			sendMessage(new ResponseMessage("Welcome to the batak game...", null));
+			sendMessage(new ResponseMessage("Welcome to the batak game...", new ArrayList<>()));
 			logger.debug("Welcome message sent");
 			while(true) {
 				String request = in.readLine();
 				logger.debug("receiving action " + request);
 				RequestMessage requestMessage = gson.fromJson(request, RequestMessage.class);
 				PlayerAction action = ClientActionFactory.createAction(requestMessage.getRequestType());
-				ResponseMessage message = action.execute();
+				ResponseMessage message = action.execute(requestMessage);
 				sendMessage(message);
 			}
 		} catch (Exception e) {
@@ -61,6 +61,8 @@ public class Client implements Runnable {
 	}
 
 	private void sendMessage(ResponseMessage message) throws IOException {
-		out.println(gson.toJson(message)); 
+		String msg = gson.toJson(message);
+		logger.debug("sending message to client..." + msg);
+		out.println(msg); 
 	}
 }
