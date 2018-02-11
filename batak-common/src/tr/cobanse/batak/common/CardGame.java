@@ -4,6 +4,8 @@ import java.util.List;
 
 public interface CardGame {
 
+	public String getGameId();
+	
 	public List<Player> getPlayers();
 	
 	public void addPlayer(Player player);

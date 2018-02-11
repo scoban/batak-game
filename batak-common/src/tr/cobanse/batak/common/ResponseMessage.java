@@ -1,5 +1,6 @@
 package tr.cobanse.batak.common;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,12 +9,20 @@ import java.util.List;
  */
 public class ResponseMessage {
 	
+	/**
+	 * action type returned regarding user request
+	 */
+	private ResponseType responseType;
+	
+	/**
+	 * message to be sent to a user
+	 */
 	private String message = "Welcome";
 	
 	/**
 	 * available games 
 	 */
-	private List<CardGame> availableGames;
+	private List<String> availableGames;
 	
 	/**
 	 * user hands card
@@ -23,39 +32,53 @@ public class ResponseMessage {
 	/**
 	 * user game info
 	 */
-	private CardGame cardGame;
+	private String cardGame;
 	
+	/**
+	 * the user in a game 
+	 */
 	private List<String> users;
 	
-	public ResponseMessage(String message, List<CardGame> games) {
-		this(message, games, null, null);
+	/**
+	 * cards that are discarded by user. This is maximum 4 cards in one turn.
+	 * In each turn, it will be cleared.
+	 */
+	private List<Card> cardsInPool = new ArrayList<Card>();
+	
+	public ResponseMessage(String message, List<String> games) {
+		this(message, games, new ArrayList<>());
 	}
 	
-	public ResponseMessage(String message, List<CardGame> games, List<Card> cards) {
-		this(message, games, cards, null);
+	public ResponseMessage(String message, List<String> games, List<Card> cards) {
+		this(message, games, cards, new NullGame().getGameId());
 	}
 	
-	public ResponseMessage(String message, List<CardGame> games, List<Card> cards, CardGame cardGame) {
-		this(message, games, cards, cardGame, null);
+	public ResponseMessage(String message, List<String> games, List<Card> cards, String cardGame) {
+		this(message, games, cards, cardGame, new ArrayList<>());
 	}
 	
-	public ResponseMessage(String message, List<CardGame> games, List<Card> cards, CardGame cardGame, List<String> users) {
+	public ResponseMessage(String message, List<String> games, List<Card> cards, String cardGame, List<String> users) {
+		this(message, games, cards, cardGame, users, ResponseType.GREETING);
+	}
+	
+	public ResponseMessage(String message, List<String> games, List<Card> cards, String cardGame, List<String> users, ResponseType responseType) {
 		this.message = message;
 		this.availableGames = games;
 		this.availableCards = cards;
 		this.cardGame = cardGame;
 		this.users = users;
+		this.responseType = responseType;
 	}
 	
 	public String getMessage() {
 		return message;
 	}
 
-	public List<CardGame> getAvailableGames() {
+	public List<String> getAvailableGames() {
 		return availableGames;
 	}
-
-	public void setAvailableGames(List<CardGame> availableGames) {
+	
+	public void setAvailableGames(List<String> availableGames) {
 		this.availableGames = availableGames;
 	}
 
@@ -71,11 +94,11 @@ public class ResponseMessage {
 		this.message = message;
 	}
 	
-	public CardGame getCardGame() {
+	public String getCardGame() {
 		return cardGame;
 	}
 	
-	public void setCardGame(CardGame cardGame) {
+	public void setCardGame(String cardGame) {
 		this.cardGame = cardGame;
 	}
 	
@@ -86,4 +109,21 @@ public class ResponseMessage {
 	public void setUsers(List<String> users) {
 		this.users = users;
 	}
+	
+	public ResponseType getResponseType() {
+		return responseType;
+	}
+	
+	public void setResponseType(ResponseType responseType) {
+		this.responseType = responseType;
+	}
+	
+	public List<Card> getCardsInPool() {
+		return cardsInPool;
+	}
+	
+	public void setCardsInPool(List<Card> cardsInPool) {
+		this.cardsInPool = cardsInPool;
+	}
+	
 }

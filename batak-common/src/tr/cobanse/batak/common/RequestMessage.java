@@ -22,17 +22,26 @@ public class RequestMessage {
 	 */
 	private RequestType requestType;
 	
+	/**
+	 * in which game a user belongs to
+	 */
+	private String gameId;
+	
 	
 	public RequestMessage(String playerName, RequestType requestType ) {
-		this(null,playerName,requestType);
+		this(playerName,requestType,null);
 	}
 	
-	public RequestMessage(Card card, String playerName, RequestType requestType ) {
+	public RequestMessage(String playerName, RequestType requestType, Card card ) {
+		this(playerName, requestType,card, null);
+	}
+
+	public RequestMessage(String playerName, RequestType requestType, Card card, String gameId ) {
 		this.card = card;
 		this.playerName = playerName;
 		this.requestType = requestType;
+		this.gameId = gameId;
 	}
-
 
 	public Card getCard() {
 		return card;
@@ -63,6 +72,12 @@ public class RequestMessage {
 		this.requestType = requestType;
 	}
 	
+	public void setGameId(String gameId) {
+		this.gameId = gameId;
+	}
 	
+	public String getGameId() {
+		return gameId;
+	}
 	
 }
