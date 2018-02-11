@@ -53,4 +53,8 @@ public class BatakGame implements CardGame {
 		players.remove(player);
 	}
 	
+	@Override
+	public String getGameId() {
+		return gameId;
+	}
 }

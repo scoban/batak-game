@@ -3,8 +3,10 @@ package tr.cobanse.batak.server.game;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import tr.cobanse.batak.common.CardGame;
+import tr.cobanse.batak.common.Player;
 
 /**
  * @author coban
@@ -18,8 +20,12 @@ public class GameRoom {
 	
 	private GameRoom() {
 		availableGames = new ArrayList<>();
+		initializeGame(2);
 	}
 	
+	private void initializeGame(int nOfGame) {
+		IntStream.range(0, nOfGame).forEach(i->availableGames.add(new BatakGame()));
+	}
 	/**
 	 * @return
 	 */
@@ -31,6 +37,18 @@ public class GameRoom {
 	
 	public void createGame(CardGame newGame) {
 		availableGames.add(newGame);
+	}
+	
+	public void registerPlayer(Player player, String gameId) {
+		CardGame cardGame = availableGames.stream().filter((game)->game.getGameId().equals(gameId))
+			.findFirst().orElseThrow(IllegalStateException::new);
+		cardGame.addPlayer(player);
+	}
+	
+	public CardGame getCardGame(String gameId) {
+		CardGame cardGame = availableGames.stream().filter((game)->game.getGameId().equals(gameId))
+			.findFirst().orElseThrow(IllegalStateException::new);
+		return cardGame;
 	}
 	
 	public List<CardGame> getAvailableGames() {
