@@ -3,11 +3,16 @@ package tr.cobanse.client.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.GridPane;
 import tr.cobanse.batak.common.CardGame;
+import tr.cobanse.batak.common.RequestMessage;
+import tr.cobanse.batak.common.RequestType;
 import tr.cobanse.batak.common.ResponseMessage;
+import tr.cobanse.batak.common.ResponseType;
+import tr.cobanse.client.gui.listener.ClientSocket;
 import tr.cobanse.client.gui.listener.GameSocketListener;
 
 public class GameRoomView implements GameSocketListener{
@@ -20,8 +25,14 @@ public class GameRoomView implements GameSocketListener{
 	private GameRoomView() {
 		this.gameRooms = FXCollections.observableArrayList(lstGameRooms);
 		this.gridPane = new GridPane();
-		lstGameRooms.add(new GameRoom());
-		lstGameRooms.stream().forEach((gameRoom)->{gridPane.getChildren().add(gameRoom.getvBox());});
+		ClientSocket.getInstance().addSocketListener(this);
+		listGame();
+//		lstGameRooms.stream().forEach((gameRoom)->{gridPane.getChildren().add(gameRoom.getvBox());});
+	}
+	
+	private void listGame() {
+		RequestMessage msg = new RequestMessage("", RequestType.LISTGAME);
+		ClientSocket.getInstance().sendRequestMessage(msg);
 	}
 	
 	public static GameRoomView getInstance() {
@@ -40,13 +51,19 @@ public class GameRoomView implements GameSocketListener{
 	
 	@Override
 	public void onEventReceived(ResponseMessage message) {
-		//only handles list game property
-		List<CardGame> cardGames = message.getAvailableGames();
-		lstGameRooms.clear();
-		for (CardGame cardGame : cardGames) {
-			GameRoom gameRoom = new GameRoom();
-			lstGameRooms.add(gameRoom);
-		}
+		Platform.runLater(()->{
+			if(message.getResponseType().equals(ResponseType.LISTGAME)) {
+				//only handles list game property
+				List<String> cardGames = message.getAvailableGames();
+				lstGameRooms.clear();
+				for (String gameId : cardGames) {
+					GameRoom gameRoom = new GameRoom(gameId);
+					lstGameRooms.add(gameRoom);
+				}
+				//Platform.runLater(runnable);
+				lstGameRooms.stream().forEach((gameRoom)->{gridPane.getChildren().add(gameRoom.getvBox());});
+			}
+		});
 	}
 
 }

@@ -3,6 +3,7 @@ package tr.cobanse.client.gui;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
@@ -22,23 +23,21 @@ public class GameRoom implements GameSocketListener{
 	private VBox vBox;
 	private Image img;
 	private ImageView imgView = new ImageView();
+	private String gameId;
+	private String userId = UUID.randomUUID().toString();
 	
-	public GameRoom() {
+	public GameRoom(String id) {
+		this.gameId = id;
 		vBox = new VBox();
 		createGameRoomIcon();
 		imgView.setOnMouseClicked((mouseEvent)->{
-			RequestMessage message = new RequestMessage("", RequestType.JOIN);
+			RequestMessage message = new RequestMessage(userId, RequestType.JOIN, null, gameId);
 			ClientSocket.getInstance().sendRequestMessage(message);
 		});
 
 		vBox.getChildren().add(imgView);
 	}
 
-	@Override
-	public void onEventReceived(ResponseMessage message) {
-		System.out.println(message);
-	}
-	
 	private void createGameRoomIcon() {
 		try {
 			img = new Image(new FileInputStream("./resources/backcard.jpg"),100,100,true,false);
@@ -50,5 +49,10 @@ public class GameRoom implements GameSocketListener{
 	
 	public VBox getvBox() {
 		return vBox;
+	}
+	
+	@Override
+	public void onEventReceived(ResponseMessage message) {
+		System.out.println(message);
 	}
 }

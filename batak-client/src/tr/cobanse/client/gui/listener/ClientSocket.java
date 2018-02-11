@@ -50,6 +50,7 @@ public class ClientSocket implements Runnable{
 		try {
 			while(true) {
 				String msg = in.readLine();
+				logger.debug("received msg"+msg);
 				serverMessage = gson.fromJson(msg, ResponseMessage.class);
 				logger.debug(serverMessage.getMessage());
 				for (GameSocketListener gameSocketListener : listeners) {
