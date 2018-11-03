@@ -16,7 +16,7 @@ import tr.cobanse.batak.common.ResponseMessage;
 import tr.cobanse.client.gui.listener.ClientSocket;
 import tr.cobanse.client.gui.listener.GameSocketListener;
 
-public class GameRoom implements GameSocketListener{
+public class GameRoom implements GameSocketListener {
 	
 	private Logger logger = Logger.getLogger(GameRoom.class);
 	private List<String> users;
@@ -32,7 +32,6 @@ public class GameRoom implements GameSocketListener{
 		createGameRoomIcon();
 		imgView.setOnMouseClicked((mouseEvent)->{
 			RequestMessage message = new RequestMessage(userId, RequestType.JOIN, null, gameId);
-			ClientSocket.getInstance().sendRequestMessage(message);
 		});
 
 		vBox.getChildren().add(imgView);

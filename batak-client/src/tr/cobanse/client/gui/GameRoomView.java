@@ -12,33 +12,27 @@ import tr.cobanse.batak.common.RequestMessage;
 import tr.cobanse.batak.common.RequestType;
 import tr.cobanse.batak.common.ResponseMessage;
 import tr.cobanse.batak.common.ResponseType;
+import tr.cobanse.batak.common.processor.ResponseMessageProcessor;
 import tr.cobanse.client.gui.listener.ClientSocket;
 import tr.cobanse.client.gui.listener.GameSocketListener;
 
-public class GameRoomView implements GameSocketListener{
+public class GameRoomView implements GameSocketListener {
 
 	private ObservableList<GameRoom> gameRooms;
 	private List<GameRoom> lstGameRooms = new ArrayList<>();
 	private static GameRoomView gameRoomView;
 	private GridPane gridPane;
 	
-	private GameRoomView() {
+	public GameRoomView() {
 		this.gameRooms = FXCollections.observableArrayList(lstGameRooms);
 		this.gridPane = new GridPane();
-		ClientSocket.getInstance().addSocketListener(this);
-		listGame();
+//		listGame();
 //		lstGameRooms.stream().forEach((gameRoom)->{gridPane.getChildren().add(gameRoom.getvBox());});
 	}
 	
 	private void listGame() {
 		RequestMessage msg = new RequestMessage("", RequestType.LISTGAME);
 		ClientSocket.getInstance().sendRequestMessage(msg);
-	}
-	
-	public static GameRoomView getInstance() {
-		if(gameRoomView==null)
-			gameRoomView = new GameRoomView();
-		return gameRoomView;
 	}
 	
 	public void addGameView(GameRoom gameRoom) {
