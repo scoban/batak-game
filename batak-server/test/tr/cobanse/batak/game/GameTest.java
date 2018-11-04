@@ -3,47 +3,63 @@ package tr.cobanse.batak.game;
 import org.junit.Assert;
 import org.junit.Test;
 
-import tr.cobanse.batak.common.CardGame;
 import tr.cobanse.batak.common.Player;
-import tr.cobanse.batak.server.game.BatakGame;
-import tr.cobanse.batak.server.game.HumanPlayer;
+import tr.cobanse.batak.server.deck.BatakException;
+import tr.cobanse.batak.server.game.BotPlayer;
+import tr.cobanse.batak.server.game.GameRoom;
 
 public class GameTest {
 
 	@Test
-	public void testGameJoin() {
-		CardGame game = new BatakGame();
-		game.addPlayer(new HumanPlayer("selami"));
-		Assert.assertEquals("New player cannot be added", 1, game.getPlayers().size());
+	public void testGameRoom_create() {
+		GameRoom room = new GameRoom();
+		System.out.printf("Game id:%s\n", room.getGameId());
+		Assert.assertNotNull(room);
 	}
 	
 	@Test
-	public void testGameLeave() {
-		CardGame game = new BatakGame();
-		Player player = new HumanPlayer("selami"); 
-		game.addPlayer(player); 
-		game.removePlayer(player);
-		Assert.assertEquals("New player cannot be added", 0, game.getPlayers().size());
+	public void testGameRoom_join_create() {
+		GameRoom room = new GameRoom();
+		RegisterPlayer registerPlayer1 = new RegisterPlayer(room);
+		RegisterPlayer registerPlayer2 = new RegisterPlayer(room);
+		RegisterPlayer registerPlayer3 = new RegisterPlayer(room);
+		RegisterPlayer registerPlayer4 = new RegisterPlayer(room);
+		RegisterPlayer registerPlayer5 = new RegisterPlayer(room);
+		
+		Thread thread1 = new Thread(registerPlayer1);
+		thread1.start();
+		
+		Thread thread2 = new Thread(registerPlayer2);
+		thread2.start();
+		
+		Thread thread3 = new Thread(registerPlayer3);
+		thread3.start();
+		
+		Thread thread4 = new Thread(registerPlayer4);
+		thread4.start();
+		
+		Thread thread5 = new Thread(registerPlayer5);
+		thread5.start();
+		
+		Assert.assertEquals(room.getnOfPlayers(), 4);
 	}
-	
-	
-	@Test
-	public void testMaxPlayer() {
-		CardGame game = new BatakGame();
-		game.addPlayer(new HumanPlayer("selami1")); 
-		game.addPlayer(new HumanPlayer("selami2")); 
-		game.addPlayer(new HumanPlayer("selami3")); 
-		game.addPlayer(new HumanPlayer("selami4")); 
-		Assert.assertEquals("New player cannot be added", 4, game.getPlayers().size());
-	}
-	
-	@Test(expected=java.lang.IllegalStateException.class)
-	public void testMaxPlayerException() {
-		CardGame game = new BatakGame();
-		game.addPlayer(new HumanPlayer("selami1")); 
-		game.addPlayer(new HumanPlayer("selami2")); 
-		game.addPlayer(new HumanPlayer("selami3")); 
-		game.addPlayer(new HumanPlayer("selami4"));
-		game.addPlayer(new HumanPlayer("selami5"));
+
+	class RegisterPlayer implements Runnable {
+		private GameRoom room;
+		
+		public RegisterPlayer(GameRoom room) {
+			this.room = room;
+		}
+		@Override
+		public void run() {
+			System.out.printf("%s\n",Thread.currentThread().getName());
+			Player player = new BotPlayer(Thread.currentThread().getName());
+			try {
+				room.registerPlayer(player );
+			} catch (BatakException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		
 	}
 }

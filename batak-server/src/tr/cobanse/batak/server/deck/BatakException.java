@@ -1,6 +1,6 @@
 package tr.cobanse.batak.server.deck;
 
-public class BatakException extends Exception {
+public class BatakException extends RuntimeException {
 
 	/**
 	 * 
@@ -14,5 +14,9 @@ public class BatakException extends Exception {
 	
 	public BatakException(String message) {
 		super(message);
+	}
+
+	public BatakException(String message, Throwable e) {
+		super(message,e);
 	}
 }

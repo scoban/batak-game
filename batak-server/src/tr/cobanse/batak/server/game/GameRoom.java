@@ -1,65 +1,64 @@
 package tr.cobanse.batak.server.game;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.IntStream;
+import java.util.UUID;
 
 import tr.cobanse.batak.common.CardGame;
 import tr.cobanse.batak.common.Player;
+import tr.cobanse.batak.common.RequestMessage;
+import tr.cobanse.batak.server.action.PlayerAction;
+import tr.cobanse.batak.server.deck.BatakException;
 
 /**
  * @author coban
- * game room stores available games 
  */
 public class GameRoom {
 	
-	private List<CardGame> availableGames;
+	private CardGame game;
+	private Player[] players = new Player[4];
+	private String gameId;
+	private int nOfPlayers = 0;
 	
-	private static GameRoom gameRoom;
-	
-	private GameRoom() {
-		availableGames = new ArrayList<>();
-		initializeGame(2);
+	public GameRoom() {
+		game = new BatakGame();
+		gameId = UUID.randomUUID().toString();
 	}
 	
-	private void initializeGame(int nOfGame) {
-		IntStream.range(0, nOfGame).forEach(i->availableGames.add(new BatakGame()));
-	}
-	/**
-	 * @return
-	 */
-	public static GameRoom getInstance() {
-		if(gameRoom==null)
-			gameRoom = new GameRoom();
-		return gameRoom;
-	}
-	
-	public void createGame(CardGame newGame) {
-		availableGames.add(newGame);
+	public void registerPlayer(Player player) throws BatakException {
+		synchronized (players) {
+			System.out.printf("adding %s th player\n",  nOfPlayers);
+			if(nOfPlayers==4) {
+				throw new BatakException("max reached");
+			}
+			players[nOfPlayers] = player;
+			nOfPlayers++;
+		}
 	}
 	
-	public void registerPlayer(Player player, String gameId) {
-		CardGame cardGame = availableGames.stream().filter((game)->game.getGameId().equals(gameId))
-			.findFirst().orElseThrow(IllegalStateException::new);
-		cardGame.addPlayer(player);
+	public void drawPlayer(Player player) throws BatakException {
+		isPlayerRegistered(player);
+	}
+	 
+	private void isPlayerRegistered(Player player) throws BatakException{
+		throw new BatakException("player is not registered");
+	}
+
+	public boolean accept(RequestMessage message) throws BatakException {
+		return false;
+	}
+
+	private void checkActionIsValid(PlayerAction action) throws BatakException{
+		throw new BatakException("invalid request");
 	}
 	
-	public CardGame getCardGame(String gameId) {
-		CardGame cardGame = availableGames.stream().filter((game)->game.getGameId().equals(gameId))
-			.findFirst().orElseThrow(IllegalStateException::new);
-		return cardGame;
+	public CardGame getGame() {
+		return game;
 	}
 	
-	public List<CardGame> getAvailableGames() {
-		return Collections.unmodifiableList(availableGames);
+	public String getGameId() {
+		return gameId;
 	}
 	
-	public void closeGame(CardGame game) {
-		availableGames.remove(game);
-	}
-	
-	public int getNumberOfGame() {
-		return availableGames.size();
+	public int getnOfPlayers() {
+		return nOfPlayers;
 	}
 }

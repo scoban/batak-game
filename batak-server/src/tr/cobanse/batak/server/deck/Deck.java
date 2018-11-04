@@ -30,7 +30,7 @@ public class Deck {
 	private void initializeDeck() {
 		List<Symbol> symbols = Symbol.asList();
 		List<CardType> cardTypes = CardType.asList();
-		
+			
 		for (CardType cardType : cardTypes)
 			for (Symbol symbol : symbols) 
 				cards.add(new Card(symbol, cardType));
