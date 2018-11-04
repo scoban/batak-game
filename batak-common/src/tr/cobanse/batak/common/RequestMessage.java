@@ -79,5 +79,12 @@ public class RequestMessage {
 	public String getGameId() {
 		return gameId;
 	}
+
+	@Override
+	public String toString() {
+		return "RequestMessage [card=" + card + ", playerName=" + playerName + ", requestType=" + requestType
+				+ ", gameId=" + gameId + "]";
+	}
+
 	
 }

@@ -125,5 +125,13 @@ public class ResponseMessage {
 	public void setCardsInPool(List<Card> cardsInPool) {
 		this.cardsInPool = cardsInPool;
 	}
+
+	@Override
+	public String toString() {
+		return "ResponseMessage [responseType=" + responseType + ", message=" + message + ", availableGames="
+				+ availableGames + ", availableCards=" + availableCards + ", cardGame=" + cardGame + ", users=" + users
+				+ ", cardsInPool=" + cardsInPool + "]";
+	}
+	
 	
 }
