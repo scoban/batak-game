@@ -5,7 +5,8 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,12 +14,12 @@ import javafx.scene.layout.VBox;
 import tr.cobanse.batak.common.RequestMessage;
 import tr.cobanse.batak.common.RequestType;
 import tr.cobanse.batak.common.ResponseMessage;
-import tr.cobanse.client.gui.listener.ClientSocket;
 import tr.cobanse.client.gui.listener.GameSocketListener;
 
+@SuppressWarnings("restriction")
 public class GameRoom implements GameSocketListener {
 	
-	private Logger logger = Logger.getLogger(GameRoom.class);
+	private Logger logger = LoggerFactory.getLogger(GameRoom.class);
 	private List<String> users;
 	private VBox vBox;
 	private Image img;

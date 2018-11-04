@@ -5,7 +5,6 @@ import java.util.List;
 import javafx.application.Platform;
 import javafx.scene.layout.BorderPane;
 import tr.cobanse.batak.common.ResponseMessage;
-import tr.cobanse.client.gui.listener.ClientSocket;
 import tr.cobanse.client.gui.listener.GameSocketListener;
 
 /**
@@ -23,7 +22,7 @@ public class GameView extends BorderPane implements GameSocketListener{
 	
 	public GameView(HandView handView) {
 		//listens incoming response message
-		ClientSocket.getInstance().addSocketListener(this);
+//		ClientSocket.getInstance().addSocketListener(this);
 	}
 
 	@Override

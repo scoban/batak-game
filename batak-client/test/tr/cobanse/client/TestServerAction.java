@@ -4,10 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 
@@ -17,13 +17,12 @@ import tr.cobanse.client.gui.listener.ClientSocket;
 
 public class TestServerAction {
 
-	private Logger logger = Logger.getLogger(TestServerAction.class);
+	private Logger logger = LoggerFactory.getLogger(TestServerAction.class);
 	
 	ClientSocket clientSocket = new ClientSocket("localhost", 60001);
 	
 	@Before
 	public void tearUp() throws UnknownHostException, IOException {
-		BasicConfigurator.configure();
 		SocketListener socketListener = new SocketListener(clientSocket);
 		new Thread(socketListener).start();
 	}
