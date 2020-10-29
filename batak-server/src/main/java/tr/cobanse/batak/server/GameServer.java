@@ -5,6 +5,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +16,10 @@ import com.google.gson.Gson;
 import tr.cobanse.batak.server.game.GameRoom;
 
 public class GameServer extends Thread {
-	
 	private Logger logger = LoggerFactory.getLogger(GameServer.class);
+	
+	private int MAX_THREAD = 10;
+	private ExecutorService executorService = Executors.newFixedThreadPool(MAX_THREAD);
 	private ServerSocket serverSocket;
 	private static int portNumber = 60001;
 	private volatile boolean running;
@@ -51,10 +55,8 @@ public class GameServer extends Thread {
 			Socket socket;
 			try {
 				socket = serverSocket.accept();
-				logger.debug("a connection request has been received..."+socket.getInetAddress());
-				Client client = new Client(socket);
-				Thread clientThread = new Thread(client);
-				clientThread.start();
+				logger.debug("a connection request has been received {}", socket.getInetAddress());
+				executorService.execute(new Client(socket));
 			} catch (IOException e) {
 				logger.error(e.getMessage());
 			}

@@ -2,6 +2,9 @@ package tr.cobanse.batak.server.game;
 
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import tr.cobanse.batak.common.CardGame;
 import tr.cobanse.batak.common.Player;
 import tr.cobanse.batak.common.RequestMessage;
@@ -12,7 +15,7 @@ import tr.cobanse.batak.server.deck.BatakException;
  * @author coban
  */
 public class GameRoom {
-	
+	private Logger logger = LoggerFactory.getLogger(GameRoom.class);
 	private CardGame game;
 	private Player[] players = new Player[4];
 	private String gameId;
@@ -25,7 +28,7 @@ public class GameRoom {
 	
 	public void registerPlayer(Player player) throws BatakException {
 		synchronized (players) {
-			System.out.printf("adding %s th player\n",  nOfPlayers);
+			logger.info("adding {} th player",  nOfPlayers);
 			if(nOfPlayers==4) {
 				throw new BatakException("max reached");
 			}
