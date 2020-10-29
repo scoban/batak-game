@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,5 +92,11 @@ public class GameServer extends Thread {
 		//game application listens connection request
 		GameServer application = GameServer.getInstance();
 		application.start();
+	}
+
+	public void shutDown() {
+		logger.info("shutting down game server...");
+		executorService.shutdownNow();
+		logger.info("shut down game server. is shutdown ? {}", executorService.isShutdown());
 	}
 }
