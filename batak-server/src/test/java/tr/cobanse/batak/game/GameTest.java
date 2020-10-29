@@ -1,7 +1,9 @@
 package tr.cobanse.batak.game;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.junit.jupiter.api.Test;
 
 import tr.cobanse.batak.common.Player;
 import tr.cobanse.batak.server.deck.BatakException;
@@ -14,7 +16,7 @@ public class GameTest {
 	public void testGameRoom_create() {
 		GameRoom room = new GameRoom();
 		System.out.printf("Game id:%s\n", room.getGameId());
-		Assert.assertNotNull(room);
+		assertNotNull(room);
 	}
 	
 	@Test
@@ -41,7 +43,7 @@ public class GameTest {
 		Thread thread5 = new Thread(registerPlayer5);
 		thread5.start();
 		
-		Assert.assertEquals(room.getnOfPlayers(), 4);
+		assertEquals(room.getnOfPlayers(), 4);
 	}
 
 	class RegisterPlayer implements Runnable {

@@ -1,7 +1,8 @@
 package tr.cobanse.batak.common;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
 
 
 public class PlayerTest {
@@ -11,7 +12,7 @@ public class PlayerTest {
 		Card card = new Card(Symbol.SINEK, CardType.AS);
 		Player player = new Player("selami") {};
 		player.drawCard(card);
-		Assert.assertTrue("can not draw card", player.cardSize() == 1);
+		assertTrue(player.cardSize() == 1, "can not draw card");
 	}
 	
 	@Test
@@ -20,7 +21,7 @@ public class PlayerTest {
 		Player player = new Player("selami") {};
 		player.drawCard(card);
 		player.drawCard(card);
-		Assert.assertTrue("can not draw card", player.cardSize() == 1);
+		assertTrue(player.cardSize() == 1, "can not draw card");
 	}
 	
 	@Test
@@ -29,6 +30,6 @@ public class PlayerTest {
 		Player player = new Player("selami") {};
 		player.drawCard(card);
 		player.discardCard(card); 
-		Assert.assertTrue("can not draw card", player.cardSize() == 0);
+		assertTrue(player.cardSize() == 0, "can not draw card");
 	}
 }

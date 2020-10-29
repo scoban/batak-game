@@ -1,8 +1,7 @@
 package tr.cobanse.batak.action;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import tr.cobanse.batak.common.RequestType;
@@ -19,30 +18,30 @@ public class TestGameAction {
 	@Test
 	public void testJoinGame() {
 		PlayerAction action = ClientActionFactory.createAction(RequestType.JOIN);
-		assert"That(action, instanceOf(JoinGame.class));
+		assertTrue(action instanceof JoinGame,"");
 	}
 	
 	@Test
 	public void testChat() {
 		PlayerAction action = ClientActionFactory.createAction(RequestType.CHAT);
-		Assert.assertThat(action, instanceOf(SendMessage.class));
+		assertTrue(action instanceof SendMessage,"");
 	}
 	
 	@Test
 	public void testDiscardCard() {
 		PlayerAction action = ClientActionFactory.createAction(RequestType.DISCARD);
-		Assert.assertThat(action, instanceOf(DiscardCard.class));
+		assertTrue(action instanceof DiscardCard,"");
 	}
 	
 	@Test
 	public void testCreateGame() {
 		PlayerAction action = ClientActionFactory.createAction(RequestType.CREATEGAME);
-		Assert.assertThat(action, instanceOf(CreateGame.class));
+		assertTrue(action instanceof CreateGame,"");
 	}
 	
 	@Test
 	public void testLeaveGame() {
 		PlayerAction action = ClientActionFactory.createAction(RequestType.LEAVE);
-		Assert.assertThat(action, instanceOf(LeaveGame.class));
+		assertTrue(action instanceof LeaveGame,"");
 	}
 }
