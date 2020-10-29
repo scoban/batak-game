@@ -3,7 +3,7 @@ package tr.cobanse.batak.action;
 import static org.hamcrest.CoreMatchers.instanceOf;
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import tr.cobanse.batak.common.RequestType;
 import tr.cobanse.batak.server.action.ClientActionFactory;
@@ -19,7 +19,7 @@ public class TestGameAction {
 	@Test
 	public void testJoinGame() {
 		PlayerAction action = ClientActionFactory.createAction(RequestType.JOIN);
-		Assert.assertThat(action, instanceOf(JoinGame.class));
+		assert"That(action, instanceOf(JoinGame.class));
 	}
 	
 	@Test
