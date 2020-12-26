@@ -1,58 +1,50 @@
 package tr.cobanse.batak.server.game;
 
-import java.util.UUID;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import tr.cobanse.batak.common.CardGame;
 import tr.cobanse.batak.common.Player;
-import tr.cobanse.batak.common.RequestMessage;
-import tr.cobanse.batak.server.action.PlayerAction;
 import tr.cobanse.batak.server.deck.BatakException;
+import tr.cobanse.batak.server.util.GameUtil;
 
 /**
  * @author coban
  */
 public class GameRoom {
-	private Logger logger = LoggerFactory.getLogger(GameRoom.class);
+	private static Logger logger = LoggerFactory.getLogger(GameRoom.class);
 	private CardGame game;
-	private Player[] players = new Player[4];
+	private LinkedList<Player> players = new LinkedList<>();
 	private String gameId;
 	private int nOfPlayers = 0;
 	
-	public GameRoom() {
-		game = new BatakGame();
-		gameId = UUID.randomUUID().toString();
+	public GameRoom(String gameId) {
+		this.game = new BatakGame();
+		this.gameId = gameId;
 	}
 	
-	public void registerPlayer(Player player) throws BatakException {
+	public void registerPlayer(Player player) {
 		synchronized (players) {
 			logger.info("adding {} th player",  nOfPlayers);
 			if(nOfPlayers==4) {
 				throw new BatakException("max reached");
 			}
-			players[nOfPlayers] = player;
+			players.add(player);
 			nOfPlayers++;
 		}
 	}
 	
-	public void drawPlayer(Player player) throws BatakException {
-		isPlayerRegistered(player);
+	public void drawPlayer(String playerName) {
+		Player player = players.stream().filter(p->p.getPlayerName().equals(playerName)).findFirst().orElse(null);
+		if(player != null) {
+			players.remove(player);
+			nOfPlayers--;
+		}
 	}
 	 
-	private void isPlayerRegistered(Player player) throws BatakException{
-		throw new BatakException("player is not registered");
-	}
-
-	public boolean accept(RequestMessage message) throws BatakException {
-		return false;
-	}
-
-	private void checkActionIsValid(PlayerAction action) throws BatakException{
-		throw new BatakException("invalid request");
-	}
-	
 	public CardGame getGame() {
 		return game;
 	}
@@ -63,5 +55,13 @@ public class GameRoom {
 	
 	public int getnOfPlayers() {
 		return nOfPlayers;
+	}
+
+	public boolean isFull() {
+		return nOfPlayers == GameUtil.MAX_PLAYER;
+	}
+ 
+	public List<Player> getPlayers() {
+		return players;
 	}
 }

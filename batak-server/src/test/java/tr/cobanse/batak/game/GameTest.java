@@ -3,6 +3,8 @@ package tr.cobanse.batak.game;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.util.UUID;
+
 import org.junit.jupiter.api.Test;
 
 import tr.cobanse.batak.common.Player;
@@ -14,14 +16,14 @@ public class GameTest {
 
 	@Test
 	public void testGameRoom_create() {
-		GameRoom room = new GameRoom();
+		GameRoom room = new GameRoom(UUID.randomUUID().toString());
 		System.out.printf("Game id:%s\n", room.getGameId());
 		assertNotNull(room);
 	}
 	
 	@Test
 	public void testGameRoom_join_create() {
-		GameRoom room = new GameRoom();
+		GameRoom room = new GameRoom(UUID.randomUUID().toString());
 		RegisterPlayer registerPlayer1 = new RegisterPlayer(room);
 		RegisterPlayer registerPlayer2 = new RegisterPlayer(room);
 		RegisterPlayer registerPlayer3 = new RegisterPlayer(room);

@@ -1,0 +1,21 @@
+Client command: nc localhost 60001
+
+{"requestType":"LISTGAME"}
+{"requestType":"JOIN", "gameId":"b7a5b3c6-6407-448e-9cbd-7cfcc3294896","playerName":"Selami1"}
+{"requestType":"JOIN", "gameId":"b7a5b3c6-6407-448e-9cbd-7cfcc3294896","playerName":"Selami2"}
+{"requestType":"JOIN", "gameId":"b7a5b3c6-6407-448e-9cbd-7cfcc3294896","playerName":"Selami3"}
+{"requestType":"JOIN", "gameId":"b7a5b3c6-6407-448e-9cbd-7cfcc3294896","playerName":"Selami4"}
+{"requestType":"LEAVE", "gameId":"b7a5b3c6-6407-448e-9cbd-7cfcc3294896","playerName":"Selami4"}
+
+
+
+
+when room is full 
+{"requestType":"JOIN", "gameId":"b7a5b3c6-6407-448e-9cbd-7cfcc3294896","playerName":"Selami5"}   
+{"responseType":"ERROR","message":"Oda doldu","cardsInPool":[]}
+
+
+
+Selami4 left, Selami5 joined
+{"responseType":"JOIN","message":"JOIN GAME","availableGames":["b7a5b3c6-6407-448e-9cbd-7cfcc3294896"],"availableCards":[],"cardGame":"b7a5b3c6-6407-448e-9cbd-7cfcc3294896","users":["Selami","Selami1","Selami3","Selami5"],"cardsInPool":[]}
+
