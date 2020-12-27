@@ -8,7 +8,7 @@ public abstract class Player {
 	/**
 	 * stores user cards
 	 */
-	private List<Card> cards = new ArrayList<Card>();
+	private List<Card> cards = new ArrayList<>();
 	
 	/**
 	 * player name
@@ -76,7 +76,8 @@ public abstract class Player {
 		if (playerName == null) {
 			if (other.playerName != null)
 				return false;
-		} else if (!playerName.equals(other.playerName))
+		} 
+		else if (!playerName.equals(other.playerName))
 			return false;
 		return true;
 	}

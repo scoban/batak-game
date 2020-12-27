@@ -79,22 +79,6 @@ public class JoinGameTest {
 		requestMessage.setGameId("b7a5b3c6-6407-448e-9cbd-7cfcc3294896");
 		BatakException batakException = assertThrows(BatakException.class, ()->joinGame.execute(requestMessage, gameContext));
 		assertEquals(batakException.getMessage(), GameExceptionMessage.EXISTING_PLAYER_NAME);
-		
-//		List<GameRoom> availableGames = g.listGames();
-//		GameRoom gameRoom = availableGames.stream().filter(g->g.getGameId().equals(requestMessage.getGameId())).findFirst().orElse(null);
-//		if(gameRoom == null) {
-//			return new ResponseMessage(GameExceptionMessage.INVALID_GAME_ROOM, ResponseType.ERROR);
-//		}
-//		if(gameRoom.isFull()) {
-//			return new ResponseMessage(GameExceptionMessage.GAME_ROOM_FULL, ResponseType.ERROR);
-//		}
-//		Player existingPlayerName = gameRoom.getPlayers().stream().filter(p->p.getPlayerName().equalsIgnoreCase(requestMessage.getPlayerName())).findFirst().orElse(null);
-//		if(existingPlayerName != null) {
-//			return new ResponseMessage(GameExceptionMessage.EXISTING_PLAYER_NAME, ResponseType.ERROR);
-//		}
-//		gameRoom.registerPlayer(new HumanPlayer(requestMessage.getPlayerName())); 
-//		return new ResponseMessage(MESSAGE, Arrays.asList(gameRoom.getGameId()), new ArrayList<Card>(), gameRoom.getGameId(), 
-//				gameRoom.getPlayers().stream().map(Player::getPlayerName).collect(Collectors.toList()), ResponseType.JOIN);
 	}
 }
 

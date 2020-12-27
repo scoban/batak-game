@@ -1,8 +1,20 @@
 package tr.cobanse.batak.action;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.Test;
 
+import tr.cobanse.batak.common.RequestMessage;
+import tr.cobanse.batak.common.RequestType;
+import tr.cobanse.batak.common.ResponseMessage;
+import tr.cobanse.batak.common.ResponseType;
+import tr.cobanse.batak.server.GameContext;
 import tr.cobanse.batak.server.action.LeaveGame;
+import tr.cobanse.batak.server.deck.BatakException;
+import tr.cobanse.batak.server.game.GameRoom;
+import tr.cobanse.batak.server.game.HumanPlayer;
+import tr.cobanse.batak.server.util.GameExceptionMessage;
 import tr.cobanse.batak.server.util.RequestCommandValidator;
 
 public class LeaveGameTest {
@@ -10,22 +22,27 @@ public class LeaveGameTest {
 	private LeaveGame leaveGame = new LeaveGame(new RequestCommandValidator());
 	
 	@Test
-	public void testLeaveGame() {
-//		String gameToBeJoined = requestMessage.getGameId();
-//		if(StringUtils.isBlank(gameToBeJoined)) {
-//			return new ResponseMessage(GameExceptionMessage.INVALID_GAME_ROOM, ResponseType.ERROR);
-//		}
-//		List<GameRoom> availableGames = gameContext.listGames();
-//		GameRoom gameRoom = availableGames.stream().filter(g->g.getGameId().equals(requestMessage.getGameId())).findFirst().orElse(null);
-//		if(gameRoom == null) {
-//			return new ResponseMessage(GameExceptionMessage.INVALID_GAME_ROOM, ResponseType.ERROR);
-//		}
-//		Player existingPlayerName = gameRoom.getPlayers().stream().filter(p->p.getPlayerName().equalsIgnoreCase(requestMessage.getPlayerName())).findFirst().orElse(null);
-//		if(existingPlayerName == null) {
-//			return new ResponseMessage(GameExceptionMessage.USER_NOT_FOUND, ResponseType.ERROR);
-//		}
-//		gameRoom.drawPlayer(requestMessage.getPlayerName()); 
-//		return new ResponseMessage(MESSAGE, Arrays.asList(gameRoom.getGameId()), new ArrayList<Card>(), gameRoom.getGameId(), 
-//				gameRoom.getPlayers().stream().map(Player::getPlayerName).collect(Collectors.toList()), ResponseType.LEAVEGAME);
+	public void testLeaveGameUserNotFound() {
+		GameContext gameContext = new GameContext();
+		GameRoom gameRoom = new GameRoom("b7a5b3c6-6407-448e-9cbd-7cfcc3294896");
+		gameRoom.registerPlayer(new HumanPlayer("1"));
+		gameContext.addGameRoom(gameRoom);
+		RequestMessage requestMessage = new RequestMessage("2",RequestType.LEAVE);
+		requestMessage.setGameId("b7a5b3c6-6407-448e-9cbd-7cfcc3294896");
+		BatakException batakException = assertThrows(BatakException.class, ()->leaveGame.execute(requestMessage, gameContext));
+		assertEquals(batakException.getMessage(), GameExceptionMessage.USER_NOT_FOUND);
+	}
+	
+	@Test
+	public void testLeaveGameUser() {
+		GameContext gameContext = new GameContext();
+		GameRoom gameRoom = new GameRoom("b7a5b3c6-6407-448e-9cbd-7cfcc3294896");
+		gameRoom.registerPlayer(new HumanPlayer("1"));
+		gameContext.addGameRoom(gameRoom);
+		RequestMessage requestMessage = new RequestMessage("1",RequestType.LEAVE);
+		requestMessage.setGameId("b7a5b3c6-6407-448e-9cbd-7cfcc3294896");
+		ResponseMessage responseMessage = leaveGame.execute(requestMessage, gameContext);
+		assertEquals(responseMessage.getResponseType(), ResponseType.LEAVEGAME);
+		assertEquals(responseMessage.getUsers().size(), 0); 
 	}
 }

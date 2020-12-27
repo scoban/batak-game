@@ -39,7 +39,7 @@ public class RequestProcessorFactory {
 			return new SendMessage();
 		}
 		if(message.getRequestType().equals(RequestType.DISCARD)) {
-			return new DiscardCard();
+			return new DiscardCard(new RequestCommandValidator());
 		}
 		if(message.getRequestType().equals(RequestType.CREATEGAME)) {
 			return new CreateGame();

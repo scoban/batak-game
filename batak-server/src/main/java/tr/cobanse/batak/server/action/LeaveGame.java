@@ -34,7 +34,7 @@ public class LeaveGame implements RequestCommand{
 		}
 		Player existingPlayerName = gameRoom.getPlayers().stream().filter(p->p.getPlayerName().equalsIgnoreCase(requestMessage.getPlayerName())).findFirst().orElse(null);
 		if(existingPlayerName == null) {
-			return new ResponseMessage(GameExceptionMessage.USER_NOT_FOUND, ResponseType.ERROR);
+			throw new BatakException(GameExceptionMessage.USER_NOT_FOUND);
 		}
 		gameRoom.drawPlayer(requestMessage.getPlayerName()); 
 		return new ResponseMessage(MESSAGE, Arrays.asList(gameRoom.getGameId()), new ArrayList<Card>(), gameRoom.getGameId(), 

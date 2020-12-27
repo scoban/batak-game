@@ -45,6 +45,13 @@ public class ResponseMessage {
 	 */
 	private List<Card> cardsInPool = new ArrayList<Card>();
 	
+	private String chatMessage;
+	
+	public ResponseMessage(String message, ResponseType responseType) {
+		this.message = message;
+		this.responseType = responseType;
+	}
+	
 	public ResponseMessage(String message, List<String> games) {
 		this(message, games, new ArrayList<>());
 	}
@@ -125,12 +132,24 @@ public class ResponseMessage {
 	public void setCardsInPool(List<Card> cardsInPool) {
 		this.cardsInPool = cardsInPool;
 	}
+	
+	public String getChatMessage() {
+		return chatMessage;
+	}
+	
+	public void setChatMessage(String chatMessage) {
+		this.chatMessage = chatMessage;
+	}
 
 	@Override
 	public String toString() {
 		return "ResponseMessage [responseType=" + responseType + ", message=" + message + ", availableGames="
 				+ availableGames + ", availableCards=" + availableCards + ", cardGame=" + cardGame + ", users=" + users
 				+ ", cardsInPool=" + cardsInPool + "]";
+	}
+
+	public boolean isJoinGame() {
+		return responseType == ResponseType.JOIN;
 	}
 	
 	

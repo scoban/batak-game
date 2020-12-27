@@ -27,6 +27,11 @@ public class RequestMessage {
 	 */
 	private String gameId;
 	
+	/**
+	 * plain text message in chat
+	 */
+	private String message;
+	
 	
 	public RequestMessage(String playerName, RequestType requestType ) {
 		this(playerName,requestType,null);
@@ -78,6 +83,14 @@ public class RequestMessage {
 	
 	public String getGameId() {
 		return gameId;
+	}
+	
+	public String getMessage() {
+		return message;
+	}
+	
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 	@Override
