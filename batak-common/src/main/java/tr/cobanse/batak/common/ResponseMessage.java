@@ -15,11 +15,6 @@ public class ResponseMessage {
 	private ResponseType responseType;
 	
 	/**
-	 * message to be sent to a user
-	 */
-	private String message = "Welcome";
-	
-	/**
 	 * available games 
 	 */
 	private List<String> availableGames;
@@ -43,42 +38,20 @@ public class ResponseMessage {
 	 * cards that are discarded by user. This is maximum 4 cards in one turn.
 	 * In each turn, it will be cleared.
 	 */
-	private List<Card> cardsInPool = new ArrayList<Card>();
+	private List<Card> cardsInPool = new ArrayList<>();
 	
 	private String chatMessage;
 	
-	public ResponseMessage(String message, ResponseType responseType) {
-		this.message = message;
+	public ResponseMessage(ResponseType responseType) {
 		this.responseType = responseType;
 	}
 	
-	public ResponseMessage(String message, List<String> games) {
-		this(message, games, new ArrayList<>());
-	}
-	
-	public ResponseMessage(String message, List<String> games, List<Card> cards) {
-		this(message, games, cards, new NullGame().getGameId());
-	}
-	
-	public ResponseMessage(String message, List<String> games, List<Card> cards, String cardGame) {
-		this(message, games, cards, cardGame, new ArrayList<>());
-	}
-	
-	public ResponseMessage(String message, List<String> games, List<Card> cards, String cardGame, List<String> users) {
-		this(message, games, cards, cardGame, users, ResponseType.GREETING);
-	}
-	
-	public ResponseMessage(String message, List<String> games, List<Card> cards, String cardGame, List<String> users, ResponseType responseType) {
-		this.message = message;
+	public ResponseMessage(ResponseType responseType, List<String> games, List<Card> cards, String cardGame, List<String> users) {
 		this.availableGames = games;
 		this.availableCards = cards;
 		this.cardGame = cardGame;
 		this.users = users;
 		this.responseType = responseType;
-	}
-	
-	public String getMessage() {
-		return message;
 	}
 
 	public List<String> getAvailableGames() {
@@ -97,10 +70,6 @@ public class ResponseMessage {
 		this.availableCards = availableCards;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	
 	public String getCardGame() {
 		return cardGame;
 	}
@@ -143,7 +112,7 @@ public class ResponseMessage {
 
 	@Override
 	public String toString() {
-		return "ResponseMessage [responseType=" + responseType + ", message=" + message + ", availableGames="
+		return "ResponseMessage [responseType=" + responseType + ", availableGames="
 				+ availableGames + ", availableCards=" + availableCards + ", cardGame=" + cardGame + ", users=" + users
 				+ ", cardsInPool=" + cardsInPool + "]";
 	}

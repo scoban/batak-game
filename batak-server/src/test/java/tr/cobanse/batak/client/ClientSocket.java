@@ -6,8 +6,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +14,7 @@ import com.google.gson.Gson;
 
 import tr.cobanse.batak.common.RequestMessage;
 import tr.cobanse.batak.common.ResponseMessage;
-import tr.cobanse.client.gui.listener.ClientSocket;
+import tr.cobanse.batak.server.util.JsonUtil;
 
 public class ClientSocket {
 
@@ -55,7 +53,7 @@ public class ClientSocket {
 					}
 					logger.debug("received msg: {}", msg);
 					serverMessage = gson.fromJson(msg, ResponseMessage.class);
-					logger.debug(serverMessage.getMessage());
+					logger.debug(JsonUtil.toJson(serverMessage));
 //					for (GameSocketListener gameSocketListener : listeners) {
 //						gameSocketListener.onEventReceived(serverMessage); 
 //					}

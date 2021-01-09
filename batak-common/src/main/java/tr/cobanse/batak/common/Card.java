@@ -17,7 +17,11 @@ public class Card {
 		return symbol;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Card [symbol=" + symbol + ", cardType=" + cardType + "]";
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

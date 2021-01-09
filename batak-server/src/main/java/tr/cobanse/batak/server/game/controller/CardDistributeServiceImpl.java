@@ -22,7 +22,7 @@ public class CardDistributeServiceImpl implements CardDistributeService {
 	@Override
 	public void distributeCards(GameRoom gameRoom) {
 		logger.debug("{}", JsonUtil.toJson(gameRoom)); 
-		List<Player> players = gameRoom.getPlayers();
+		List<Player> players = gameRoom.getGame().getPlayers();
 		Deck deck = new Deck();
 		while(deck.remainingCardSize()!=0) {
 			players.get(0).drawCard(deck.getCard());

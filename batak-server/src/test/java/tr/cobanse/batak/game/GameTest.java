@@ -59,7 +59,7 @@ public class GameTest {
 			System.out.printf("%s\n",Thread.currentThread().getName());
 			Player player = new BotPlayer(Thread.currentThread().getName());
 			try {
-				room.registerPlayer(player );
+				room.getGame().addPlayer(player );
 			} catch (BatakException e) {
 				System.out.println(e.getMessage());
 			}

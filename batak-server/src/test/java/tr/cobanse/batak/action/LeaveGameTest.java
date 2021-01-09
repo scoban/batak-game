@@ -25,7 +25,7 @@ public class LeaveGameTest {
 	public void testLeaveGameUserNotFound() {
 		GameContext gameContext = new GameContext();
 		GameRoom gameRoom = new GameRoom("b7a5b3c6-6407-448e-9cbd-7cfcc3294896");
-		gameRoom.registerPlayer(new HumanPlayer("1"));
+		gameRoom.getGame().addPlayer(new HumanPlayer("1"));
 		gameContext.addGameRoom(gameRoom);
 		RequestMessage requestMessage = new RequestMessage("2",RequestType.LEAVE);
 		requestMessage.setGameId("b7a5b3c6-6407-448e-9cbd-7cfcc3294896");
@@ -37,7 +37,7 @@ public class LeaveGameTest {
 	public void testLeaveGameUser() {
 		GameContext gameContext = new GameContext();
 		GameRoom gameRoom = new GameRoom("b7a5b3c6-6407-448e-9cbd-7cfcc3294896");
-		gameRoom.registerPlayer(new HumanPlayer("1"));
+		gameRoom.getGame().addPlayer(new HumanPlayer("1"));
 		gameContext.addGameRoom(gameRoom);
 		RequestMessage requestMessage = new RequestMessage("1",RequestType.LEAVE);
 		requestMessage.setGameId("b7a5b3c6-6407-448e-9cbd-7cfcc3294896");

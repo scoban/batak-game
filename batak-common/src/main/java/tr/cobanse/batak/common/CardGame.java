@@ -14,7 +14,4 @@ public interface CardGame {
 	
 	public Player currentPlayer();
 	
-	public ResponseMessage execute(RequestMessage message);
-	
-	public void start();
 }

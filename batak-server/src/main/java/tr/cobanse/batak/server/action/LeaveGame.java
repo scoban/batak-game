@@ -1,10 +1,8 @@
 package tr.cobanse.batak.server.action;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
-import tr.cobanse.batak.common.Card;
 import tr.cobanse.batak.common.Player;
 import tr.cobanse.batak.common.RequestMessage;
 import tr.cobanse.batak.common.ResponseMessage;
@@ -28,16 +26,11 @@ public class LeaveGame implements RequestCommand{
 	@Override
 	public ResponseMessage execute(RequestMessage requestMessage, GameContext gameContext) {
 		requestValidator.validateRequest(requestMessage);
-		GameRoom gameRoom = gameContext.findGame(requestMessage.getGameId());
-		if(gameRoom == null) {
-			throw new BatakException(GameExceptionMessage.INVALID_GAME_ROOM);
-		}
-		Player existingPlayerName = gameRoom.getPlayers().stream().filter(p->p.getPlayerName().equalsIgnoreCase(requestMessage.getPlayerName())).findFirst().orElse(null);
-		if(existingPlayerName == null) {
-			throw new BatakException(GameExceptionMessage.USER_NOT_FOUND);
-		}
-		gameRoom.drawPlayer(requestMessage.getPlayerName()); 
-		return new ResponseMessage(MESSAGE, Arrays.asList(gameRoom.getGameId()), new ArrayList<Card>(), gameRoom.getGameId(), 
-				gameRoom.getPlayers().stream().map(Player::getPlayerName).collect(Collectors.toList()), ResponseType.LEAVEGAME);
+		GameRoom gameRoom = gameContext.findGame(requestMessage.getGameId()).orElseThrow(()->new BatakException(GameExceptionMessage.INVALID_GAME_ROOM));
+		Player player = gameRoom.getGame().getPlayers().stream().filter(p->p.getPlayerName().equalsIgnoreCase(requestMessage.getPlayerName()))
+				.findFirst().orElseThrow(() -> new BatakException(GameExceptionMessage.USER_NOT_FOUND));
+		gameRoom.getGame().removePlayer(player); 
+		return new ResponseMessage(ResponseType.LEAVEGAME, Collections.emptyList(), Collections.emptyList(), gameRoom.getGameId(), gameRoom.getGame().getPlayers().stream().map(p->p.getPlayerName())
+				.collect(Collectors.toList())); 
 	}
 }

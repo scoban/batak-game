@@ -1,10 +1,8 @@
 package tr.cobanse.batak.server.action;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
-import tr.cobanse.batak.common.Card;
 import tr.cobanse.batak.common.Player;
 import tr.cobanse.batak.common.RequestMessage;
 import tr.cobanse.batak.common.ResponseMessage;
@@ -29,21 +27,17 @@ public class JoinGame implements RequestCommand{
 	@Override
 	public ResponseMessage execute(RequestMessage requestMessage, GameContext gameContext) {
 		requestValidator.validateRequest(requestMessage);
-		GameRoom gameRoom = gameContext.findGame(requestMessage.getGameId());
-		if(gameRoom == null) {
-			throw new BatakException(GameExceptionMessage.INVALID_GAME_ROOM);
-		}
-		
+		GameRoom gameRoom = gameContext.findGame(requestMessage.getGameId()).orElseThrow(()->new BatakException(GameExceptionMessage.INVALID_GAME_ROOM));		
 		if(gameRoom.isFull()) {
 			throw new BatakException(GameExceptionMessage.GAME_ROOM_FULL);
 		}
-		Player existingPlayerName = gameRoom.getPlayers().stream().filter(p->p.getPlayerName().equalsIgnoreCase(requestMessage.getPlayerName())).findFirst().orElse(null);
-		if(existingPlayerName != null) {
+		Player player = gameRoom.getGame().getPlayers().stream().filter(p->p.getPlayerName().equalsIgnoreCase(requestMessage.getPlayerName())).findFirst().orElse(null);
+		if(player != null) {
 			throw new BatakException(GameExceptionMessage.EXISTING_PLAYER_NAME);
 		}
-		gameRoom.registerPlayer(new HumanPlayer(requestMessage.getPlayerName())); 
-		return new ResponseMessage(MESSAGE, Arrays.asList(gameRoom.getGameId()), new ArrayList<Card>(), gameRoom.getGameId(), 
-				gameRoom.getPlayers().stream().map(Player::getPlayerName).collect(Collectors.toList()), ResponseType.JOIN);
+		gameRoom.getGame().addPlayer(new HumanPlayer(requestMessage.getPlayerName())); 
+		return new ResponseMessage(ResponseType.JOIN, Collections.emptyList(), Collections.emptyList(), gameRoom.getGameId(), gameRoom.getGame().getPlayers().stream().map(p->p.getPlayerName())
+				.collect(Collectors.toList())); 
 	}
 
 }

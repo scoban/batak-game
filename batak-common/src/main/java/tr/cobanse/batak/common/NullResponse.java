@@ -2,7 +2,7 @@ package tr.cobanse.batak.common;
 
 import java.util.List;
 
-public class NullGame implements CardGame{
+public class NullResponse implements CardGame{
 
 	private String gameId = "nullgameid";
 	

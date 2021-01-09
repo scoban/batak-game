@@ -1,14 +1,15 @@
 package tr.cobanse.batak.server.game;
 
-import java.util.LinkedList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import tr.cobanse.batak.common.Card;
 import tr.cobanse.batak.common.CardGame;
 import tr.cobanse.batak.common.Player;
-import tr.cobanse.batak.server.deck.BatakException;
 import tr.cobanse.batak.server.util.GameUtil;
 
 /**
@@ -17,7 +18,6 @@ import tr.cobanse.batak.server.util.GameUtil;
 public class GameRoom {
 	private static Logger logger = LoggerFactory.getLogger(GameRoom.class);
 	private CardGame game;
-	private LinkedList<Player> players = new LinkedList<>();
 	private String gameId;
 	private int nOfPlayers = 0;
 	
@@ -26,25 +26,6 @@ public class GameRoom {
 		this.gameId = gameId;
 	}
 	
-	public void registerPlayer(Player player) {
-		synchronized (players) {
-			logger.info("adding {} th player",  nOfPlayers);
-			if(nOfPlayers==4) {
-				throw new BatakException("max reached");
-			}
-			players.add(player);
-			nOfPlayers++;
-		}
-	}
-	
-	public void drawPlayer(String playerName) {
-		Player player = players.stream().filter(p->p.getPlayerName().equals(playerName)).findFirst().orElse(null);
-		if(player != null) {
-			players.remove(player);
-			nOfPlayers--;
-		}
-	}
-	 
 	public CardGame getGame() {
 		return game;
 	}
@@ -61,8 +42,19 @@ public class GameRoom {
 		return nOfPlayers == GameUtil.MAX_PLAYER;
 	}
  
-	public List<Player> getPlayers() {
-		return players;
+	public void drawCard(String playerName, Card card) {
+		Optional<Player> player = getPlayer(playerName);
+		player.ifPresent(p->p.discardCard(card));  
 	}
 
+	private Optional<Player> getPlayer(String playerName) {
+		return game.getPlayers().stream().filter(p->p.getPlayerName().equals(playerName)).findFirst();
+	}
+
+	public List<Card> getPlayerCards(String playerName) {
+		Optional<Player> player = getPlayer(playerName);
+		if(player.isPresent())
+			return player.get().getCards();
+		return Collections.emptyList();
+	}
 }

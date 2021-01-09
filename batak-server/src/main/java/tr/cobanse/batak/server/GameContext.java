@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import tr.cobanse.batak.server.game.GameRoom;
 
@@ -22,7 +23,7 @@ public class GameContext {
 		gameRoomContainer.put("Game-1", gameRoom);
 	}
 
-	public GameRoom findGame(String gameId) {
-		return listGames().stream().filter(g->g.getGameId().equals(gameId)).findFirst().orElse(null);
+	public Optional<GameRoom> findGame(String gameId) {
+		return listGames().stream().filter(g->g.getGameId().equals(gameId)).findFirst();
 	}
 }

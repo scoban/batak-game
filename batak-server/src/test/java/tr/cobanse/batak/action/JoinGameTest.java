@@ -57,10 +57,10 @@ public class JoinGameTest {
 	public void testJoinGameFullRoom() {
 		GameContext gameContext = new GameContext();
 		GameRoom gameRoom = new GameRoom("b7a5b3c6-6407-448e-9cbd-7cfcc3294896");
-		gameRoom.registerPlayer(new HumanPlayer("1"));
-		gameRoom.registerPlayer(new HumanPlayer("2"));
-		gameRoom.registerPlayer(new HumanPlayer("3"));
-		gameRoom.registerPlayer(new HumanPlayer("4"));
+		gameRoom.getGame().addPlayer(new HumanPlayer("1"));
+		gameRoom.getGame().addPlayer(new HumanPlayer("2"));
+		gameRoom.getGame().addPlayer(new HumanPlayer("3"));
+		gameRoom.getGame().addPlayer(new HumanPlayer("4"));
 		gameContext.addGameRoom(gameRoom);
 		RequestMessage requestMessage = new RequestMessage("selami",RequestType.JOIN);
 		requestMessage.setGameId("b7a5b3c6-6407-448e-9cbd-7cfcc3294896");
@@ -72,8 +72,8 @@ public class JoinGameTest {
 	public void testJoinGameDuplicatePlayer() {
 		GameContext gameContext = new GameContext();
 		GameRoom gameRoom = new GameRoom("b7a5b3c6-6407-448e-9cbd-7cfcc3294896");
-		gameRoom.registerPlayer(new HumanPlayer("1"));
-		gameRoom.registerPlayer(new HumanPlayer("2"));
+		gameRoom.getGame().addPlayer(new HumanPlayer("1"));
+		gameRoom.getGame().addPlayer(new HumanPlayer("2"));
 		gameContext.addGameRoom(gameRoom);
 		RequestMessage requestMessage = new RequestMessage("2",RequestType.JOIN);
 		requestMessage.setGameId("b7a5b3c6-6407-448e-9cbd-7cfcc3294896");

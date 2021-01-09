@@ -1,6 +1,7 @@
 package tr.cobanse.batak.common;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class Player {
@@ -15,7 +16,7 @@ public abstract class Player {
 	 */
 	private String playerName;
 	
-	public Player(String playerName) {
+	protected Player(String playerName) {
 		super();
 		this.playerName = playerName;
 	}
@@ -54,6 +55,10 @@ public abstract class Player {
 	
 	public int cardSize() {
 		return cards.size();
+	}
+	
+	public List<Card> getCards() {
+		return Collections.unmodifiableList(cards);
 	}
 
 	@Override

@@ -72,7 +72,7 @@ public class Client implements Runnable {
 //			sendMessage(responseMessage);				
 		}catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			sendMessage(new ResponseMessage("ERROR", Collections.emptyList(), Collections.emptyList(), null, Collections.emptyList(), ResponseType.ERROR));
+			throw e;
 		}
 	}
 
