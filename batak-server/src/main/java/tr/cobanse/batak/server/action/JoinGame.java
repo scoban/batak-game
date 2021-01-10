@@ -1,7 +1,6 @@
 package tr.cobanse.batak.server.action;
 
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 import tr.cobanse.batak.common.Player;
 import tr.cobanse.batak.common.RequestMessage;
@@ -15,8 +14,6 @@ import tr.cobanse.batak.server.util.GameExceptionMessage;
 import tr.cobanse.batak.server.util.RequestCommandValidator;
 
 public class JoinGame implements RequestCommand{
-
-	private static final String MESSAGE = "JOIN GAME";
 
 	private RequestCommandValidator requestValidator;
 	

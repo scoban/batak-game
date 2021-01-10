@@ -1,7 +1,7 @@
 package tr.cobanse.batak.server.action;
 
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +34,6 @@ public class StartGame implements RequestCommand{
 		Player player = gameRoom.getGame().getPlayers().stream().filter(p->p.getPlayerName().equalsIgnoreCase(requestMessage.getPlayerName()))
 				.findFirst().orElseThrow(() -> new BatakException(GameExceptionMessage.USER_NOT_FOUND));
 		player.setReady(true);
-		return new ResponseMessage(ResponseType.JOIN, Collections.emptyList(), Collections.emptyList(), gameRoom.getGameId(), gameRoom.getGame().getPlayers());
-	}
+		return new ResponseMessage(ResponseType.STARTGAME, Arrays.asList(gameRoom.getGameId()), Collections.emptyList(), gameRoom.getGameId(), gameRoom.getGame().getPlayers());
+	} 
 }
