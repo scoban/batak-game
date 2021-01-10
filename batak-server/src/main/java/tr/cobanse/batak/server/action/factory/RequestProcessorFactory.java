@@ -12,6 +12,7 @@ import tr.cobanse.batak.server.action.NullType;
 import tr.cobanse.batak.server.action.RequestCommand;
 import tr.cobanse.batak.server.action.SendMessage;
 import tr.cobanse.batak.server.action.StartGame;
+import tr.cobanse.batak.server.game.controller.CardDistributeServiceImpl;
 import tr.cobanse.batak.server.util.RequestCommandValidator;
 
 public class RequestProcessorFactory {
@@ -46,7 +47,7 @@ public class RequestProcessorFactory {
 			return new CreateGame();
 		}
 		if(message.getRequestType().equals(RequestType.STARTGAME)) {
-			return new StartGame(new RequestCommandValidator());
+			return new StartGame(new RequestCommandValidator(), new CardDistributeServiceImpl());
 		}
 		return new NullType();
 	}

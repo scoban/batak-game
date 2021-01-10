@@ -1,35 +1,34 @@
 package tr.cobanse.batak.common;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-
-public class PlayerTest {
+class PlayerTest {
 	
 	@Test
-	public void testDrawCard() {
+	void testDrawCard() {
 		Card card = new Card(Symbol.SINEK, CardType.AS);
 		Player player = new Player("selami") {};
 		player.drawCard(card);
-		assertTrue(player.cardSize() == 1, "can not draw card");
+		assertEquals(1, player.cardSize(), "can not draw card");
 	}
 	
 	@Test
-	public void testDrawCardDuplicate() {
+	void testDrawCardDuplicate() {
 		Card card = new Card(Symbol.SINEK, CardType.AS);
 		Player player = new Player("selami") {};
 		player.drawCard(card);
 		player.drawCard(card);
-		assertTrue(player.cardSize() == 1, "can not draw card");
+		assertEquals(1, player.cardSize(), "can not draw card");
 	}
 	
 	@Test
-	public void testDiscardCard() {
+	void testDiscardCard() {
 		Card card = new Card(Symbol.SINEK, CardType.AS);
 		Player player = new Player("selami") {};
 		player.drawCard(card);
 		player.discardCard(card); 
-		assertTrue(player.cardSize() == 0, "can not draw card");
+		assertEquals(1, player.cardSize(), "can not draw card");
 	}
 }

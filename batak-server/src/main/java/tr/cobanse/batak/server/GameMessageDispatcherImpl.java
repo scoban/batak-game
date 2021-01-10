@@ -19,7 +19,7 @@ public class GameMessageDispatcherImpl implements GameMessageDispatcher{
 	private Map<String, List<Client>> connectionContainer = new HashMap<>();
 	
 	public void addSubscriber(String gameRoomId, Client client) {
-		List<Client> clients = connectionContainer.getOrDefault(gameRoomId, new ArrayList<Client>());
+		List<Client> clients = connectionContainer.getOrDefault(gameRoomId, new ArrayList<>());
 		clients.add(client);
 		connectionContainer.put(gameRoomId, clients);
 	}

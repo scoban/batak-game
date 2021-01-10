@@ -2,6 +2,7 @@ package tr.cobanse.batak.action;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,9 @@ import tr.cobanse.batak.common.ResponseType;
 import tr.cobanse.batak.common.Symbol;
 import tr.cobanse.batak.server.GameContext;
 import tr.cobanse.batak.server.action.DiscardCard;
+import tr.cobanse.batak.server.deck.BatakException;
 import tr.cobanse.batak.server.game.GameRoom;
+import tr.cobanse.batak.server.util.JsonUtil;
 import tr.cobanse.batak.server.util.RequestCommandValidator;
 import tr.cobanse.batak.util.GameTestUtils;
 
@@ -29,7 +32,6 @@ public class DiscardCardTest {
 		GameContext gameContext = GameTestUtils.createGameRoom("b7a5b3c6-6407-448e-9cbd-7cfcc3294896");
 		GameRoom gameRoom = gameContext.findGame("b7a5b3c6-6407-448e-9cbd-7cfcc3294896").get();
 		Card card = new Card(Symbol.SINEK, CardType.AS);
-		
 		gameRoom.getGame().getPlayers().get(0).drawCard(card);
 		gameRoom.getGame().getPlayers().get(0).drawCard(new Card(Symbol.SINEK, CardType.EIGHT));
 		
@@ -41,7 +43,33 @@ public class DiscardCardTest {
 		assertEquals(ResponseType.DISCARD, responseMessage.getResponseType());
 		assertEquals(MAX_PLAYER, responseMessage.getPlayers().size());
 		assertEquals(1, responseMessage.getAvailableCards().size());
+		assertEquals("2", responseMessage.getCurrentPlayer().getPlayerName());
+		System.out.println(JsonUtil.toJson(responseMessage)); 
 	}
 	
+	@Test
+	public void testDiscardCardGameInvalidTurn() {
+		GameContext gameContext = GameTestUtils.createGameRoom("b7a5b3c6-6407-448e-9cbd-7cfcc3294896");
+		GameRoom gameRoom = gameContext.findGame("b7a5b3c6-6407-448e-9cbd-7cfcc3294896").get();
+		Card card = new Card(Symbol.SINEK, CardType.AS);
+		gameRoom.getGame().getPlayers().get(0).drawCard(card);
+		gameRoom.getGame().getPlayers().get(0).drawCard(new Card(Symbol.SINEK, CardType.EIGHT));
+		
+		RequestMessage requestMessage = new RequestMessage("1", RequestType.DISCARD);
+		requestMessage.setGameId(gameRoom.getGameId());
+		requestMessage.setCard(card);
+		ResponseMessage responseMessage = discardCard.execute(requestMessage, gameContext);
+		assertNotNull(responseMessage);
+		assertEquals(ResponseType.DISCARD, responseMessage.getResponseType());
+		assertEquals(MAX_PLAYER, responseMessage.getPlayers().size());
+		assertEquals(1, responseMessage.getAvailableCards().size());
+		assertEquals("2", responseMessage.getCurrentPlayer().getPlayerName());
+		
+		
+		//invalid turn
+		requestMessage.setGameId(gameRoom.getGameId());
+		requestMessage.setCard(new Card(Symbol.SINEK, CardType.EIGHT));
+		assertThrows(BatakException.class, ()->discardCard.execute(requestMessage, gameContext));
+	}
 }
 

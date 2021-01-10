@@ -33,6 +33,8 @@ public class RequestMessage {
 	private String message;
 	
 	
+	private int guessPoint;
+	
 	public RequestMessage(String playerName, RequestType requestType ) {
 		this(playerName,requestType,null);
 	}
@@ -93,6 +95,13 @@ public class RequestMessage {
 		this.message = message;
 	}
 
+	public int getGuessPoint() {
+		return guessPoint;
+	}
+	
+	public void setGuessPoint(int guessPoint) {
+		this.guessPoint = guessPoint;
+	}
 	@Override
 	public String toString() {
 		return "RequestMessage [card=" + card + ", playerName=" + playerName + ", requestType=" + requestType

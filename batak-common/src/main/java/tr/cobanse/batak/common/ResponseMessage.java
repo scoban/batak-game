@@ -1,6 +1,6 @@
 package tr.cobanse.batak.common;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -34,11 +34,13 @@ public class ResponseMessage {
 	 */
 	private List<Player> players;
 	
+	private Player currentPlayer;
+	
 	/**
 	 * cards that are discarded by user. This is maximum 4 cards in one turn.
 	 * In each turn, it will be cleared.
 	 */
-	private List<Card> cardsInPool = new ArrayList<>();
+	private List<GameRound> cardsInPool = new LinkedList<>();
 	
 	private String chatMessage;
 	
@@ -94,11 +96,11 @@ public class ResponseMessage {
 		this.responseType = responseType;
 	}
 	
-	public List<Card> getCardsInPool() {
+	public List<GameRound> getCardsInPool() {
 		return cardsInPool;
 	}
 	
-	public void setCardsInPool(List<Card> cardsInPool) {
+	public void setCardsInPool(List<GameRound> cardsInPool) {
 		this.cardsInPool = cardsInPool;
 	}
 	
@@ -110,16 +112,23 @@ public class ResponseMessage {
 		this.chatMessage = chatMessage;
 	}
 
+	public Player getCurrentPlayer() {
+		return currentPlayer;
+	}
+	
+	public void setCurrentPlayer(Player currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+	
 	@Override
 	public String toString() {
-		return "ResponseMessage [responseType=" + responseType + ", availableGames="
-				+ availableGames + ", availableCards=" + availableCards + ", cardGame=" + cardGame + ", users=" + players
-				+ ", cardsInPool=" + cardsInPool + "]";
+		return "ResponseMessage [responseType=" + responseType + ", availableGames=" + availableGames
+				+ ", availableCards=" + availableCards + ", cardGame=" + cardGame + ", players=" + players
+				+ ", currentPlayer=" + currentPlayer + ", cardsInPool=" + cardsInPool + ", chatMessage=" + chatMessage
+				+ "]";
 	}
 
 	public boolean isJoinGame() {
 		return responseType == ResponseType.JOIN;
 	}
-	
-	
 }
