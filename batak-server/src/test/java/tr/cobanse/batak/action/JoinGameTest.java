@@ -18,43 +18,43 @@ import tr.cobanse.batak.server.game.HumanPlayer;
 import tr.cobanse.batak.server.util.GameExceptionMessage;
 import tr.cobanse.batak.server.util.RequestCommandValidator;
 
-public class JoinGameTest {
+class JoinGameTest {
 
 	private JoinGame joinGame = new JoinGame(new RequestCommandValidator());
 	
 	@Test
-	public void testJoinGameMissingGameId() {
+	void testJoinGameMissingGameId() {
 		GameContext gameContext = new GameContext();
 		gameContext.addGameRoom(new GameRoom("b7a5b3c6-6407-448e-9cbd-7cfcc3294896"));
 		RequestMessage requestMessage = new RequestMessage("selami",RequestType.JOIN);
 		BatakException batakException = assertThrows(BatakException.class, ()->joinGame.execute(requestMessage, gameContext));
-		assertEquals(batakException.getMessage(), GameExceptionMessage.INVALID_GAME_ROOM);
+		assertEquals(GameExceptionMessage.INVALID_GAME_ROOM, batakException.getMessage());
 	}
 	
 	@Test
-	public void testJoinGameInvalidGameId() {
+	void testJoinGameInvalidGameId() {
 		GameContext gameContext = new GameContext();
 		gameContext.addGameRoom(new GameRoom("b7a5b3c6-6407-448e-9cbd-7cfcc3294896"));
 		RequestMessage requestMessage = new RequestMessage("selami",RequestType.JOIN);
 		requestMessage.setGameId("ABCTEST");
 		BatakException batakException = assertThrows(BatakException.class, ()->joinGame.execute(requestMessage, gameContext));
-		assertEquals(batakException.getMessage(), GameExceptionMessage.INVALID_GAME_ROOM);
+		assertEquals(GameExceptionMessage.INVALID_GAME_ROOM, batakException.getMessage());
 	}
 	
 	@Test
-	public void testJoinGame() {
+	void testJoinGame() {
 		GameContext gameContext = new GameContext();
 		gameContext.addGameRoom(new GameRoom("b7a5b3c6-6407-448e-9cbd-7cfcc3294896"));
 		RequestMessage requestMessage = new RequestMessage("selami",RequestType.JOIN);
 		requestMessage.setGameId("b7a5b3c6-6407-448e-9cbd-7cfcc3294896");
 		ResponseMessage responseMessage = joinGame.execute(requestMessage, gameContext);
 		assertNotNull(responseMessage);
-		assertEquals(responseMessage.getResponseType(), ResponseType.JOIN);
-		assertEquals(responseMessage.getUsers().size(), 1);
+		assertEquals(ResponseType.JOIN, responseMessage.getResponseType());
+		assertEquals(1, responseMessage.getPlayers().size());
 	}
 	
 	@Test
-	public void testJoinGameFullRoom() {
+	void testJoinGameFullRoom() {
 		GameContext gameContext = new GameContext();
 		GameRoom gameRoom = new GameRoom("b7a5b3c6-6407-448e-9cbd-7cfcc3294896");
 		gameRoom.getGame().addPlayer(new HumanPlayer("1"));
@@ -65,11 +65,11 @@ public class JoinGameTest {
 		RequestMessage requestMessage = new RequestMessage("selami",RequestType.JOIN);
 		requestMessage.setGameId("b7a5b3c6-6407-448e-9cbd-7cfcc3294896");
 		BatakException batakException = assertThrows(BatakException.class, ()->joinGame.execute(requestMessage, gameContext));
-		assertEquals(batakException.getMessage(), GameExceptionMessage.GAME_ROOM_FULL);
+		assertEquals(GameExceptionMessage.GAME_ROOM_FULL, batakException.getMessage());
 	}
 	
 	@Test
-	public void testJoinGameDuplicatePlayer() {
+	void testJoinGameDuplicatePlayer() {
 		GameContext gameContext = new GameContext();
 		GameRoom gameRoom = new GameRoom("b7a5b3c6-6407-448e-9cbd-7cfcc3294896");
 		gameRoom.getGame().addPlayer(new HumanPlayer("1"));
@@ -78,7 +78,7 @@ public class JoinGameTest {
 		RequestMessage requestMessage = new RequestMessage("2",RequestType.JOIN);
 		requestMessage.setGameId("b7a5b3c6-6407-448e-9cbd-7cfcc3294896");
 		BatakException batakException = assertThrows(BatakException.class, ()->joinGame.execute(requestMessage, gameContext));
-		assertEquals(batakException.getMessage(), GameExceptionMessage.EXISTING_PLAYER_NAME);
+		assertEquals(GameExceptionMessage.EXISTING_PLAYER_NAME, batakException.getMessage());
 	}
 }
 

@@ -32,8 +32,7 @@ public class DiscardCard implements RequestCommand {
 		Card card = requestMessage.getCard();
 		gameRoom.drawCard(player, card);
 		List<Card> cards = gameRoom.getPlayerCards(player);
-		return new ResponseMessage(ResponseType.DISCARD, Collections.emptyList(), cards, gameRoom.getGameId(), gameRoom.getGame().getPlayers().stream().map(p->p.getPlayerName())
-				.collect(Collectors.toList())); 
+		return new ResponseMessage(ResponseType.DISCARD, Collections.emptyList(), cards, gameRoom.getGameId(), gameRoom.getGame().getPlayers()); 
 	}
 
 }

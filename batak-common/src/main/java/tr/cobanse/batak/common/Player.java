@@ -16,6 +16,8 @@ public abstract class Player {
 	 */
 	private String playerName;
 	
+	private boolean ready;
+	
 	protected Player(String playerName) {
 		super();
 		this.playerName = playerName;
@@ -59,6 +61,14 @@ public abstract class Player {
 	
 	public List<Card> getCards() {
 		return Collections.unmodifiableList(cards);
+	}
+	
+	public boolean isReady() {
+		return ready;
+	}
+	
+	public void setReady(boolean ready) {
+		this.ready = ready;
 	}
 
 	@Override

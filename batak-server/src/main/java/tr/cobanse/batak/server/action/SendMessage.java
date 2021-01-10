@@ -12,8 +12,6 @@ import tr.cobanse.batak.server.util.GameExceptionMessage;
 
 public class SendMessage implements RequestCommand{
 
-	private static final String MESSAGE = "CHAT MESSAGE";
-	
 	@Override
 	public ResponseMessage execute(RequestMessage requestMessage, GameContext gameContext) {
 		String chatMessage = requestMessage.getMessage();

@@ -30,7 +30,7 @@ public class LeaveGameTest {
 		RequestMessage requestMessage = new RequestMessage("2",RequestType.LEAVE);
 		requestMessage.setGameId("b7a5b3c6-6407-448e-9cbd-7cfcc3294896");
 		BatakException batakException = assertThrows(BatakException.class, ()->leaveGame.execute(requestMessage, gameContext));
-		assertEquals(batakException.getMessage(), GameExceptionMessage.USER_NOT_FOUND);
+		assertEquals(GameExceptionMessage.USER_NOT_FOUND, batakException.getMessage());
 	}
 	
 	@Test
@@ -42,7 +42,7 @@ public class LeaveGameTest {
 		RequestMessage requestMessage = new RequestMessage("1",RequestType.LEAVE);
 		requestMessage.setGameId("b7a5b3c6-6407-448e-9cbd-7cfcc3294896");
 		ResponseMessage responseMessage = leaveGame.execute(requestMessage, gameContext);
-		assertEquals(responseMessage.getResponseType(), ResponseType.LEAVEGAME);
-		assertEquals(responseMessage.getUsers().size(), 0); 
+		assertEquals(ResponseType.LEAVEGAME, responseMessage.getResponseType());
+		assertEquals(0, responseMessage.getPlayers().size()); 
 	}
 }

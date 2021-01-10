@@ -30,9 +30,9 @@ public class ResponseMessage {
 	private String cardGame;
 	
 	/**
-	 * the user in a game 
+	 * the user in a game  
 	 */
-	private List<String> users;
+	private List<Player> players;
 	
 	/**
 	 * cards that are discarded by user. This is maximum 4 cards in one turn.
@@ -46,11 +46,11 @@ public class ResponseMessage {
 		this.responseType = responseType;
 	}
 	
-	public ResponseMessage(ResponseType responseType, List<String> games, List<Card> cards, String cardGame, List<String> users) {
+	public ResponseMessage(ResponseType responseType, List<String> games, List<Card> cards, String cardGame, List<Player> users) {
 		this.availableGames = games;
 		this.availableCards = cards;
 		this.cardGame = cardGame;
-		this.users = users;
+		this.players = users;
 		this.responseType = responseType;
 	}
 
@@ -78,12 +78,12 @@ public class ResponseMessage {
 		this.cardGame = cardGame;
 	}
 	
-	public List<String> getUsers() {
-		return users;
+	public List<Player> getPlayers() {
+		return players;
 	}
 	
-	public void setUsers(List<String> users) {
-		this.users = users;
+	public void setPlayers(List<Player> players) {
+		this.players = players;
 	}
 	
 	public ResponseType getResponseType() {
@@ -113,7 +113,7 @@ public class ResponseMessage {
 	@Override
 	public String toString() {
 		return "ResponseMessage [responseType=" + responseType + ", availableGames="
-				+ availableGames + ", availableCards=" + availableCards + ", cardGame=" + cardGame + ", users=" + users
+				+ availableGames + ", availableCards=" + availableCards + ", cardGame=" + cardGame + ", users=" + players
 				+ ", cardsInPool=" + cardsInPool + "]";
 	}
 

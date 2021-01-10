@@ -1,10 +1,11 @@
 package tr.cobanse.batak.server;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import tr.cobanse.batak.server.game.GameRoom;
 
@@ -16,7 +17,7 @@ public class GameContext {
 	}
 	
 	public List<GameRoom> listGames() {
-		return new ArrayList<>(gameRoomContainer.values());
+		return Collections.unmodifiableList(gameRoomContainer.values().stream().collect(Collectors.toList()));
 	}
 	
 	public void addGameRoom(GameRoom gameRoom) {

@@ -36,8 +36,7 @@ public class JoinGame implements RequestCommand{
 			throw new BatakException(GameExceptionMessage.EXISTING_PLAYER_NAME);
 		}
 		gameRoom.getGame().addPlayer(new HumanPlayer(requestMessage.getPlayerName())); 
-		return new ResponseMessage(ResponseType.JOIN, Collections.emptyList(), Collections.emptyList(), gameRoom.getGameId(), gameRoom.getGame().getPlayers().stream().map(p->p.getPlayerName())
-				.collect(Collectors.toList())); 
+		return new ResponseMessage(ResponseType.JOIN, Collections.emptyList(), Collections.emptyList(), gameRoom.getGameId(), gameRoom.getGame().getPlayers()); 
 	}
 
 }

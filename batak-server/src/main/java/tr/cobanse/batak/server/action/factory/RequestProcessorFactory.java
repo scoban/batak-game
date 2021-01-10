@@ -11,6 +11,7 @@ import tr.cobanse.batak.server.action.ListGame;
 import tr.cobanse.batak.server.action.NullType;
 import tr.cobanse.batak.server.action.RequestCommand;
 import tr.cobanse.batak.server.action.SendMessage;
+import tr.cobanse.batak.server.action.StartGame;
 import tr.cobanse.batak.server.util.RequestCommandValidator;
 
 public class RequestProcessorFactory {
@@ -44,7 +45,9 @@ public class RequestProcessorFactory {
 		if(message.getRequestType().equals(RequestType.CREATEGAME)) {
 			return new CreateGame();
 		}
-		return null;
+		if(message.getRequestType().equals(RequestType.STARTGAME)) {
+			return new StartGame(new RequestCommandValidator());
+		}
+		return new NullType();
 	}
-
 }

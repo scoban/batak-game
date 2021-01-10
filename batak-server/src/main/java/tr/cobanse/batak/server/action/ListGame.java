@@ -11,16 +11,15 @@ import tr.cobanse.batak.common.ResponseMessage;
 import tr.cobanse.batak.common.ResponseType;
 import tr.cobanse.batak.server.GameContext;
 import tr.cobanse.batak.server.game.GameRoom;
+import tr.cobanse.batak.server.util.JsonUtil;
 
 public class ListGame implements RequestCommand {
 
-	private Logger logger = LoggerFactory.getLogger(ListGame.class);
-	
-	private static final String MESSAGE = "List of available games";
+	private Logger logger = LoggerFactory.getLogger(getClass().getName());
 	
 	@Override
 	public ResponseMessage execute(RequestMessage requestMessage, GameContext gameContext) {
-		logger.debug("executing action {}" , requestMessage);
+		logger.debug("executing action {}" , JsonUtil.toJson(requestMessage)); 
 		List<GameRoom> availableGames = gameContext.listGames();
 		List<String> gameIds = availableGames.stream().map(GameRoom::getGameId).collect(Collectors.toList());
 		ResponseMessage responseMessage = new ResponseMessage(ResponseType.LISTGAME, gameIds, null, null, null); 

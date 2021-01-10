@@ -15,8 +15,8 @@ import tr.cobanse.batak.common.Symbol;
 import tr.cobanse.batak.server.GameContext;
 import tr.cobanse.batak.server.action.DiscardCard;
 import tr.cobanse.batak.server.game.GameRoom;
-import tr.cobanse.batak.server.game.HumanPlayer;
 import tr.cobanse.batak.server.util.RequestCommandValidator;
+import tr.cobanse.batak.util.GameTestUtils;
 
 public class DiscardCardTest {
 
@@ -26,15 +26,8 @@ public class DiscardCardTest {
 	
 	@Test
 	public void testDiscardCardGame() {
-		GameContext gameContext = new GameContext();
-		GameRoom gameRoom = new GameRoom("b7a5b3c6-6407-448e-9cbd-7cfcc3294896");
-		gameRoom.getGame().addPlayer(new HumanPlayer("1"));
-		gameRoom.getGame().addPlayer(new HumanPlayer("2"));
-		gameRoom.getGame().addPlayer(new HumanPlayer("3"));
-		gameRoom.getGame().addPlayer(new HumanPlayer("4"));
-//		cardDistributeService.distributeCards(gameRoom);
-		gameContext.addGameRoom(gameRoom);
-		
+		GameContext gameContext = GameTestUtils.createGameRoom("b7a5b3c6-6407-448e-9cbd-7cfcc3294896");
+		GameRoom gameRoom = gameContext.findGame("b7a5b3c6-6407-448e-9cbd-7cfcc3294896").get();
 		Card card = new Card(Symbol.SINEK, CardType.AS);
 		
 		gameRoom.getGame().getPlayers().get(0).drawCard(card);
@@ -46,7 +39,7 @@ public class DiscardCardTest {
 		ResponseMessage responseMessage = discardCard.execute(requestMessage, gameContext);
 		assertNotNull(responseMessage);
 		assertEquals(ResponseType.DISCARD, responseMessage.getResponseType());
-		assertEquals(MAX_PLAYER, responseMessage.getUsers().size());
+		assertEquals(MAX_PLAYER, responseMessage.getPlayers().size());
 		assertEquals(1, responseMessage.getAvailableCards().size());
 	}
 	
