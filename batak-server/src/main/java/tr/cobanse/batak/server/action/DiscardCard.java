@@ -2,7 +2,6 @@ package tr.cobanse.batak.server.action;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import tr.cobanse.batak.common.Card;
 import tr.cobanse.batak.common.RequestMessage;
@@ -16,7 +15,6 @@ import tr.cobanse.batak.server.util.RequestCommandValidator;
 
 public class DiscardCard implements RequestCommand {
 
-	private static final String MESSAGE = "DISCARD CARD";
 //	private GameRuleController gameRuleController;
 	private RequestCommandValidator requestCommandValidator;
 	
