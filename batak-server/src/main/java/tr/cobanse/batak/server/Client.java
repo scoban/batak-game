@@ -16,6 +16,8 @@ import com.google.gson.Gson;
 import tr.cobanse.batak.common.RequestMessage;
 import tr.cobanse.batak.common.ResponseMessage;
 import tr.cobanse.batak.common.ResponseType;
+import tr.cobanse.batak.server.deck.BatakException;
+import tr.cobanse.batak.server.util.GameExceptionMessage;
 
 /**
  * @author selamic
@@ -45,16 +47,20 @@ public class Client implements Runnable {
 	public void run() {
 		try{
 			logger.debug("Client is created and listening...");
+			//https://stackoverflow.com/questions/10240694/java-socket-api-how-to-tell-if-a-connection-has-been-closed/10241044#10241044
+			//TODO isClosed and isConnected not property work, need more proper way to handle disconnect issue
+			//these methods only tells you whether you closed or disconnected from the client not vice versa
 			while(clientSocket.isClosed() == false) {
 				String request = in.readLine();
 				if(StringUtils.isBlank(request))
-					break;
+					continue;
 				logger.debug("receiving action {}" , request);
 				processRequest(request);
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 		} finally {
+			//TODO hata alindiginda, socket kapaniyor, daha farkli bir yöntem yapilmali.
 			try {
 				releaseResource();
 			} catch (IOException e) {
@@ -63,7 +69,7 @@ public class Client implements Runnable {
 		}
 	}
 	
-	private void processRequest(String rawSocketMessage) throws IOException {
+	private void processRequest(String rawSocketMessage) {
 		logger.debug("received message {}", rawSocketMessage);
 		try {
 			RequestMessage requestMessage = gson.fromJson(rawSocketMessage, RequestMessage.class);
@@ -72,7 +78,7 @@ public class Client implements Runnable {
 //			sendMessage(responseMessage);				
 		}catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			throw e;
+//			throw new BatakException(GameExceptionMessage.TECHNICAL_PROBLEM);
 		}
 	}
 

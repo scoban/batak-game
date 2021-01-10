@@ -1,6 +1,7 @@
 package tr.cobanse.batak.server.action;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,8 @@ import tr.cobanse.batak.server.util.JsonUtil;
 import tr.cobanse.batak.server.util.RequestCommandValidator;
 
 public class StartGame implements RequestCommand{
+
+	private static final int MAX_PLAYER = 4;
 
 	private Logger logger = LoggerFactory.getLogger(getClass().getName());
 	
@@ -40,6 +43,10 @@ public class StartGame implements RequestCommand{
 		return new ResponseMessage(ResponseType.STARTGAME, Arrays.asList(gameRoom.getGameId()), player.getCards(), gameRoom.getGameId(), gameRoom.getGame().getPlayers());
 	}
 	private void distributeCards(GameRoom gameRoom) {
+		List<Player> players = gameRoom.getGame().getPlayers();
+		if(players.isEmpty() || players.size() < MAX_PLAYER) {
+			return;
+		}
 		Player waitingPlayer = gameRoom.getGame().getPlayers().stream().filter(p->p.isReady() == false).findAny().orElse(null);
 		if(waitingPlayer != null) {
 			return;

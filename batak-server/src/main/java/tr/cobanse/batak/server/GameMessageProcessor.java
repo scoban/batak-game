@@ -1,5 +1,7 @@
 package tr.cobanse.batak.server;
 
+import java.io.IOException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +32,15 @@ public class GameMessageProcessor {
 		if(StringUtils.isBlank(requestMessage.getGameId()) == false && responseMessage.isJoinGame()) {
 			gameMessageDispatcher.addSubscriber(requestMessage.getGameId(), client); 
 		}
-		gameMessageDispatcher.sendMessageToAllPlayers(responseMessage.getCardGame(), responseMessage);
+		if(StringUtils.isBlank(requestMessage.getGameId()) == false)
+			gameMessageDispatcher.sendMessageToAllPlayers(responseMessage.getCardGame(), responseMessage);
+		else {
+			try {
+				client.sendMessage(responseMessage);
+			} catch (IOException e) {
+				logger.error(e.getMessage(), e);
+			} 
+		}
 		return responseMessage;
 	}
 }

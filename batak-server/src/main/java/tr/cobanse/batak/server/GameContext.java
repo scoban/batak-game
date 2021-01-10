@@ -21,7 +21,7 @@ public class GameContext {
 	}
 	
 	public void addGameRoom(GameRoom gameRoom) {
-		gameRoomContainer.put("Game-1", gameRoom);
+		gameRoomContainer.put(gameRoom.getGameId(), gameRoom);
 	}
 
 	public Optional<GameRoom> findGame(String gameId) {

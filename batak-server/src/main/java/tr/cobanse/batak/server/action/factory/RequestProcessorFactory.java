@@ -22,7 +22,7 @@ public class RequestProcessorFactory {
 	
 	public static RequestCommand getProcessor(RequestMessage message) {
 		
-		if(message==null)
+		if(message==null || message.getRequestType() == null)
 			return new NullType();
 		
 		if(message.getRequestType().equals(RequestType.LISTGAME)) {
