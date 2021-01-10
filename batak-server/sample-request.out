@@ -3,10 +3,10 @@ Client command: nc localhost 60001
 {"requestType":"CREATEGAME"}
 {"requestType":"LISTGAME"}
 
-{"requestType":"JOIN", "gameId":"254b75d2-0525-4791-b773-0f16fbbb4aca","playerName":"Selami1"}
+{"requestType":"JOIN", "gameId":"ccb82dfc-ac35-41f7-ad92-155ca2b03f29","playerName":"Selami1"}
 
 
-{"requestType":"STARTGAME", "gameId":"254b75d2-0525-4791-b773-0f16fbbb4aca","playerName":"Selami2"}
+{"requestType":"STARGAME", "gameId":"ccb82dfc-ac35-41f7-ad92-155ca2b03f29","playerName":"Selami1"}
 
 
 {"requestType":"JOIN", "gameId":"b7a5b3c6-6407-448e-9cbd-7cfcc3294896","playerName":"Selami1"}
