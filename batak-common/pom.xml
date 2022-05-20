@@ -6,7 +6,7 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<properties>
 		<junit-jupiter.version>5.7.0</junit-jupiter.version>
-		<json.version>2.8.2</json.version>
+		<json.version>2.8.9</json.version>
 	</properties>
 	<dependencies>
 		<dependency>
